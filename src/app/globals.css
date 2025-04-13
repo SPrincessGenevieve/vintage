@@ -1,0 +1,721 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f6f8;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #f4f6f8;
+  border-radius: 20px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #f4f6f8;
+}
+body {
+  font-family: var(--font-poppins);
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+/* Custom Scrollbar Styles */
+.custom-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #C4AD93 #f0f0f0; /* Firefox */
+}
+
+/* For Chrome, Edge, and Safari */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px; /* Customize scrollbar height */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #C4AD93; /* Scrollbar thumb color */
+  border-radius: 10px; /* Rounded edges */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Scrollbar track color */
+}
+
+
+/* Scroll container settings */
+.scroll-container {
+  width: 100%;
+  height: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #104144 #e6e6e6; /* Thumb color and background for Firefox */
+}
+
+/* Scrollbar for WebKit browsers (Chrome, Safari) */
+.scroll-container::-webkit-scrollbar {
+  width: 2px; /* Width of the scrollbar */
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background-color: #e6e6e6; /* Background of the scrollbar track */
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: #104144; /* Scrollbar thumb color */
+  border-radius: 10px; /* Rounded scrollbar thumb */
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: #104144; /* Darker red on hover */
+}
+
+/* Smooth scrolling */
+.scroll-container {
+  scroll-behavior: smooth; /* Enables smooth scrolling */
+}
+
+.progress-container {
+  width: 80%;
+  height: 8px;
+  background-color: #e5e7eb; /* Gray background */
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #104144; /* Blue background */
+  border-radius: 8px;
+  transition: width 0.1s ease-in-out; /* Smooth transition */
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 187 31% 26%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--primary)) transparent;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px; /* Adjust height for horizontal scrollbars */
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4a5568; /* Thumb color */
+  border-radius: 4px; /* Rounded corners */
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* Track color */
+}
+
+.custom-scrollbar::-webkit-scrollbar-button {
+  display: none; /* Hides the arrow buttons at the ends of the scrollbar */
+}
+
+.dash-chart{
+  height: 100px;
+}
+
+@media (max-width: 1585px) {
+  .line-connect {
+    display: none;
+  }
+
+  .card-main {
+    margin: 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-cont{
+    max-height: 200px;
+  }
+  .input-group {
+    width: 100%;
+  }
+  .dash-main-cont{
+    flex-direction: column;
+  }
+  .side-nav-cont{
+    display: none;
+  }
+  .checkout-cont{
+    flex-direction: column;
+  }
+  .tier-three-cont{
+    height: 100%;
+  }
+}
+
+@media (max-height: 775px) {
+  .pass-group {
+    display: flex;
+    flex-direction: row;
+  }
+  .form-storage{
+    width: 100%;
+  }
+  .main-form-storage, .main-book-storage{
+    padding: 2px;
+  }
+  .leading-cont{
+    line-height: normal;
+  }
+  .address{
+    padding: 0;
+    font-size: 10px;
+  }
+  .date-time{
+    font-size: 10px;
+  }
+  .storage-img-1{
+    width: 45%;
+    height: 70%;
+  }
+  .storage-tier1-cont-l{
+    width: 80%;
+  }
+  .storage-desc-left{
+    padding: 10px;
+    padding-top: 5px;
+
+  }
+}
+
+
+
+@media (max-height: 668px) {
+  .input-group {
+    margin-top: 0;
+  }
+}
+
+@media (max-height: 1235px) {
+  .input-group {
+    margin-top: 0;
+  }
+}
+
+@media (max-height: 714px) {
+  .sign-up-progress-top {
+    margin-top: 10px;
+  }
+  .gap-select {
+    gap: 0;
+  }
+  .id-select-cont {
+    min-height: 0;
+  }
+  .sign-up-4-btn {
+    margin-top: 1px;
+  }
+}
+
+@media (max-height: 660px) {
+  .qr-image {
+    width: 100px;
+    height: 100px;
+  }
+  .qr-code {
+    width: auto;
+    height: 120px;
+  }
+
+  .mfa-cont {
+    margin-top: 0;
+  }
+  .mfa-forgot-pass {
+    margin-top: 0;
+  }
+  .sign-in-cont {
+    margin-top: 0;
+  }
+}
+
+@media (max-height: 800px) {
+  .mobile-app-store {
+    margin-top: 20px;
+  }
+  .sign-up-5-cont {
+    height: 0;
+    min-height: 40px;
+  }
+  .line-1-card {
+    font-size: 14px;
+  }
+  .credit-card-cont {
+    flex-direction: row;
+  }
+}
+
+.bottom-foot {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.sidebar-logo {
+  width: 160px;
+  height: auto;
+}
+
+.sidebar-wine-card {
+  width: 160px;
+  height: auto;
+}
+@media (max-width: 980px) {
+  .glass-slide-cont {
+    flex-direction: column;
+    align-items: center;
+  }
+  .tier-two-cont{
+    flex-direction: column;
+    max-height: 100%;
+  }
+  .tier-three-cont{
+    max-height: 100%;
+    flex-direction: column;
+  }
+  .top-wine{
+    height: 100%;
+  }
+  .chart-dashboard{
+    height: auto;
+  }
+}
+
+@media (max-width: 545px) {
+  .port-top-cont {
+    display: flex;
+    flex-direction: column;
+  }
+  .tier-2-icon{
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 991px) {
+  
+  .storage-foot{
+    flex-direction: column;
+  }
+  
+  .search-input {
+    width: 20px;
+  }
+  .storage-bottom-1{
+    flex-direction: column-reverse;
+    height: 100%;
+  }
+  .storage-tier1-cont-l{
+    width: 100%;
+    padding: 50px;
+  }
+  .storage-tier1-cont-r{
+    width: 100%;
+  }
+  .storage-img-1{
+    width: 100%;
+    height: 100%;
+  }
+  .storage-img-1-cont{
+    padding: 50px;
+  }
+  .booking-cont{
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+  .date-book-cont, .carousel-cont, .carousel-desc-cont, .main-storage{
+    width: 100%;
+    height: 100%;
+  }
+  .carousel-text{
+    font-size: 12px;
+  }
+  .main-storage{
+    flex-direction: column;
+  }
+  .booking-footer{
+    height: 100%;
+  }
+  .date-book-cont, .form-storage{
+    position: relative;
+    padding: 20px;
+  }
+  .main-post{
+    
+  }
+  .post-group{
+    height: 100%;
+    flex-direction: column;
+  }
+  .insight-cont-2{
+    width: 100%;
+    gap: 2;
+    flex-direction: column;
+  }
+  .insight-cont-b{
+    width: 100%;
+    height: 100%;
+  }
+  .latest-1{
+    height: 100%;
+    width: 100%;
+    padding-left: 5px;
+    flex-direction: column;
+    padding: 2px;
+  }
+  .latest-2, .latest-3{
+    height: 100%;
+    width: 100%;
+    padding: 4px;
+    padding-bottom: 10px;
+  }
+  .icon-mini{
+    width: auto;
+    height: 100%;
+  }
+  .search-insight{
+    flex-direction: column;
+  }
+  .text-insight {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1221px) {
+  .latest-2, .latest-3{
+    height: 100%;
+    width: 100%;
+    padding: 4px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+  }
+}
+
+@media (max-width: 380px) {
+  .legend-cont {
+    display: flex;
+    flex-direction: column;
+  }
+  .pie-cont{
+    top: 0;
+    height: 50%;
+  }
+
+}
+
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100ch; /* Limit the width to 100 characters */
+   background-color: red;
+}
+@media (max-width: 770px) {
+  .grid-images{
+    display: none;
+   }
+}
+@media (max-height: 750px) {
+  /* .pie-cont{
+    max-width: 100px;
+    max-height: 100px;
+  } */
+
+  .level-group {
+    line-height: 1;
+  }
+  .port-wine-pic {
+    width: 11px;
+  }
+  .sidebar-logo {
+    width: 100px;
+  }
+  .sidebar-wine-card {
+    width: 100px;
+  }
+  .sidebar-text {
+    font-size: 10px;
+  }
+  .sidebar-link {
+    padding: 5px;
+  }
+  .sidebar-logo-cont {
+    margin-top: 5px;
+  }
+  .notif-cont {
+    height: 400px;
+  }
+  .notif-text {
+    font-size: 14px;
+  }
+  .bottom-feature {
+    font-size: 12px;
+  }
+/* 
+  .icon-item {
+    width: 15px;
+    height: 15px;
+  } */
+  .btn-s {
+    height: 25px;
+  }
+
+  .case-cont {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .text-icon-title {
+    color: red;
+  }
+
+  .port-top-cont {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .gen-text-s {
+    font-size: 10px;
+  }
+  .gen-text-xs {
+    font-size: 8px;
+  }
+  .gen-text-xxs {
+    font-size: 5px;
+  }
+  .gen-text-l {
+    font-size: 14px;
+  }
+  .port-card-cont {
+    height: 100px;
+    width: 90px;
+  }
+  .port-card {
+    width: 40px;
+  }
+  .port-title {
+    font-size: 11px;
+  }
+  .search-icon {
+    height: 20px;
+  }
+  .asc-icon {
+    height: 17px;
+  }
+  .page-btn {
+    font-size: 12px;
+    padding: 2px;
+    height: 25px;
+    width: 25px;
+  }
+  .page-cont-btn {
+    margin-top: 0;
+  }
+  .ellipsis {
+    height: 15px;
+    width: 15px;
+  }
+  .wine-table-cont {
+    line-height: 0.5;
+  }
+  .port-desc {
+    line-height: 1;
+    margin-top: 10px;
+  }
+  .wine-slide-cont {
+    width: 100px;
+    height: auto;
+  }
+  .port-info-cont {
+    /* gap: 0px;
+    padding:5px; */
+  }
+  .image-slide-cont {
+    padding: 0;
+    margin: 10px;
+    width: 200px;
+  }
+  .main-wine {
+    /* width: 25px;
+    height: 80px; */
+  }
+  .sub-wine {
+    width: 15px;
+    height: 50px;
+  }
+  .number-group {
+    /* display: flex;
+    justify-content: space-between; */
+  }
+  .chart-cont {
+    justify-content: center;
+  }
+  .port-charts-cont {
+    margin: 0;
+  }
+  .chart-cont-left {
+    width: 100%;
+    height: auto;
+  }
+  .chart-cont-right {
+    width: auto;
+  }
+  .chart-stats-cont {
+    width: auto;
+    line-height: 1;
+  }
+  .chart {
+    height: 180px;
+  }
+}
+
+@media (max-height: 625px) {
+  .port-flex {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+}
+
+@media (max-height: 600px) {
+  .booking-footer{
+    height: 55%;
+  }
+}
+
+@media (max-width: 1095px) {
+  .level-market {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+}
+
+@media (max-width: 670px) {
+  .level-market {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .level-market {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+   
+  }
+  .img-sel{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1420px) {
+  .indices-graph{
+    width: 350px;
+  }
+}
+
+
+@media (max-width: 1180px) {
+  .indices-graph{
+    width: 300px;
+  }
+  /* .card-group{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  } */
+}
+
+
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
