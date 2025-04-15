@@ -14,6 +14,7 @@ function Billing() {
   };
 
   const { paid_fee } = useUserContext()
+  
 
   return (
     <div>

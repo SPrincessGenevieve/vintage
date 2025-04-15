@@ -1,6 +1,5 @@
 import { AlertCircle, ChartLine, Wine } from "lucide-react";
 import React from "react";
-import { MockWines } from "@/lib/mock-data";
 import Image from "next/image";
 import { useUserContext } from "@/app/context/UserContext";
 import {
@@ -10,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { UserData } from "@/lib/data/user";
 
 export default function TierThree() {
   const itemsData = [
@@ -19,7 +19,8 @@ export default function TierThree() {
     "Purchase Date",
     "£ Gain / Loss",
   ];
-  const { investment, active_user } = useUserContext();
+  // const { investment } = useUserContext();
+  const investment = UserData.investment;
 
   // Sort by value in descending order and take the top 5
   if (!investment) {
@@ -50,7 +51,7 @@ export default function TierThree() {
         </div>
 
         {/* Table Header */}
-        <div className="w-full bg-[white]">
+        <div className="w-full bg-[white] rounded-xl">
           <Table className="w-full">
             <TableHeader>
               <TableRow>

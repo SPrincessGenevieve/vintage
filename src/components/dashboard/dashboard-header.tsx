@@ -18,29 +18,22 @@ import AddSubAccountDialog from "../layout/add-sub-account-dialog";
 import Loading from "../loading";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import DepositDialog from "../settings/deposit-dialog";
+import { UserData } from "@/lib/data/user";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function DashboardHeader() {
   // State to track the selected item
   const [selectedUser, setSelectedUser] = useState("");
-  const {
-    sub_accounts,
-    userData,
-    profile_picture,
-    sub_account_list,
-    user_now_id,
-    total_cases_state,
-    sessionkey,
-    setUserDetails,
-  } = useUserContext();
-  const router = useRouter(); // Use Next.js router for navigation
+  const { userData, profile_picture, sessionkey, setUserDetails } =
+    useUserContext();
   const authHeader = "Token " + sessionkey;
-  const [loading, setLoading] = useState(false); // Loading state added
   const [open, setOpen] = useState(false);
   const [sub_account_id, setSubAccountID] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isInvestment, setIsInvestment] = useState(false);
+
+  const sub_accounts = UserData.sub_accounts;
 
   setUserDetails({
     user_now_id: sub_account_id,
@@ -113,21 +106,6 @@ export default function DashboardHeader() {
 
   const handleGetSubAccounts = async () => {
     setOpen(!open);
-    console.log("CLICKED");
-    try {
-      const response = await axios.get(`${apiUrl}/user/sub-accounts/`, {
-        headers: {
-          Authorization: authHeader,
-          "Content-Type": "application/json",
-        },
-      });
-      const sub_user_data = response.data;
-      setUserDetails({
-        sub_accounts: sub_user_data,
-      });
-    } catch (error) {
-      console.log("ERROR: ", error);
-    }
   };
 
   const handleSetSubAccount = async (index: number) => {
@@ -302,7 +280,11 @@ export default function DashboardHeader() {
                           onClick={() => handleDeleteSubAccount(index)}
                           className="p-0 h-auto mr-2"
                           variant="ghost"
-                          disabled={item.first_name === userData.first_name ? true : false}
+                          disabled={
+                            item.first_name === userData.first_name
+                              ? true
+                              : false
+                          }
                         >
                           <Trash color="red"></Trash>
                         </Button>

@@ -2,9 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
-import SignupFormFive from "@/components/auth/sign-up-form-5";
 import QRCode from "react-qr-code";
-import Image from "next/image";
 import "./../../globals.css";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -35,19 +33,7 @@ function SuspendedSearchParams() {
 }
 
 export default function SignupFive() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  const {
-    email,
-    password1,
-    sessionid,
-    sessionkey,
-    kyc_verify,
-    otp_validated,
-    otp_verify,
-    mfa,
-    setUserDetails,
-  } = useUserContext();
+  const { sessionid, sessionkey, setUserDetails } = useUserContext();
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -57,16 +43,10 @@ export default function SignupFive() {
   const [token, setToken] = useState("");
   const [status, setStatus] = useState(""); // Add state for storing KYC status
   const [loading, setLoading] = useState(false); // Loading state added
-
   const router = useRouter();
-  const [veriff, setVeriff] = useState<string | null>(null);
   const navigate = useRouter();
-
-  const [kycValue, setKycValue] = useState(kyc_verify);
-  const [optValidatedValue, setOptValidated] = useState(otp_validated);
-  const [optVerifyValue, setOptVerifyValue] = useState(otp_verify);
-  const [mfaValue, setMfaValue] = useState(mfa);
   const [nextPage, setNextPage] = useState(false);
+  const defaultToken = "123456";
 
   useEffect(() => {
     setDeviceSessionId(sessionid);
@@ -77,119 +57,50 @@ export default function SignupFive() {
     e.preventDefault();
     setLoading(true);
 
-    if (!token || token.length !== 6) {
-      setError("Please enter a valid 6-digit code");
+    if (!token) {
+      setError("Please input token to proceed.");
       setHideError(true);
+      setLoading(false);
+      setTimeout(() => {
+        setHideError(false);
+      }, 2000);
       return;
     }
 
-    const data = {
-      email,
-      password: password1,
-      token,
-    };
-
-    try {
-      // OTP verification POST request
-      const authHeader = "Token " + sessionkey; // Basic Authentication header
-
-      const otpResponse = await axios.post(`${apiUrl}/auth/otp/verify/`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: authHeader,
-        },
-      });
-
-      const validateResponse = await axios.post(
-        `${apiUrl}/auth/otp/validate/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
-
-      setDeviceSessionId(otpResponse.data.device_session_id);
-
-      if (otpResponse.status === 200) {
-        // OTP verified, now sign in
-        console.log("Verified successfully");
-        console.log(otpResponse);
-        console.log("Validated successfully");
-        console.log(validateResponse);
-
-        const signInResponse = await axios.post(
-          `${apiUrl}/auth/sign-in/`,
-          data,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: authHeader,
-            },
-          }
-        );
-
-        if (signInResponse.status === 200) {
-          const { device_session_id, kyc_status, mfa, otp_enabled } =
-            signInResponse.data;
-
-          // Update context with new session data
-          setUserDetails({
-            sessionid: otpResponse.data.device_session_id, // Use directly here
-            sessionkey: signInResponse.data.key,
-            kyc_verify: kyc_status,
-            otp_validated: otp_enabled,
-            mfa,
-          });
-
-          // Fetch KYC verification status after successful sign-in
-          const kycResponse = await axios.post(
-            `${apiUrl}/auth/kyc/verify`,
-            {},
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: authHeader,
-              },
-            }
-          );
-
-          if (kycResponse.status === 200 || kycResponse.status === 201) {
-            setStatus(kycResponse.data.status);
-            setSuccess(true);
-            setHideError(false);
-
-            console.log(
-              "PAGE 5: DEVICE CONTEXT",
-              otpResponse.data.device_session_id
-            );
-            console.log("PAGE 5: DEVICE", otpResponse.data.device_session_id);
-            console.log("PAGE 5: ", signInResponse.data.key);
-
-            // Navigate to next step
-            router.push(
-              `/auth/sign-up-4?verification_url=${encodeURIComponent(
-                kycResponse.data.verification_url
-              )}`
-            );
-          } else {
-            setError("");
-            setHideError(true);
-          }
-        } else {
-          setError("Sign-in failed. Please try again.");
-          setHideError(true);
-        }
-      }
-    } catch (error: any) {
-      setError("An error occurred. Please try again.");
+    if (token !== defaultToken) {
+      setError("Your 6 digit code is incorrect.");
       setHideError(true);
-      console.error("Submission failed:", error);
-    } finally {
       setLoading(false);
+      setTimeout(() => {
+        setHideError(false);
+      }, 2000);
+      return;
     }
+
+    // OTP verification POST request
+    setDeviceSessionId(
+      "eyJkZXZpY2VJZCI6IjEyMzQ1NiIsInNlc3Npb25JZCI6Ijc4OTAxMiIsImlhdCI6MTY4MzMwMDAwMCwiZXhwIjoxNjgzMzA2MDAwfQ"
+    );
+
+    // Update context with new session data
+    setUserDetails({
+      sessionid: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9", // Use directly here
+      sessionkey:
+        "eyJkZXZpY2VJZCI6IjEyMzQ1NiIsInNlc3Npb25JZCI6Ijc4OTAxMiIsImlhdCI6MTY4MzMwMDAwMCwiZXhwIjoxNjgzMzA2MDAwfQ",
+      kyc_verify: "approved",
+      otp_validated: "true",
+      mfa: "true",
+    });
+    setStatus("approved");
+    setSuccess(true);
+    setHideError(false);
+    setTimeout(() => {
+      setLoading(false);
+      setUserDetails({
+        isLoggedIn: true
+      })
+      router.push("/dashboard");
+    }, 1000);
   };
 
   const handleNext = () => {

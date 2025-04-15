@@ -5,7 +5,7 @@ import Auth2 from "@/images/auth_2.jpg";
 import Auth3 from "@/images/auth_3.png";
 import Auth4 from "@/images/auth_4.jpg";
 import Auth2Layover from "@/images/auth-2-layover.png";
-import "@/app/globals.css"
+import "@/app/globals.css";
 
 export default function AuthGridImages() {
   return (
@@ -19,9 +19,7 @@ export default function AuthGridImages() {
             backgroundPosition: "center",
           }}
         ></div>
-        <div
-          className="bg-[#104144] p-4 pl-8 h-[30%] relative mb-2 rounded-tr-xl rounded-br-xl text-white group"
-        >
+        <div className="bg-[#104144] p-4 pl-8 h-[30%] relative mb-2 rounded-tr-xl rounded-br-xl text-white group">
           {/* When hover this disappears */}
           <div className="max-w-80 pt-14 group-hover:hidden">
             <h1 className="text-3xl tracking-wider ">500+</h1>
@@ -68,7 +66,13 @@ export default function AuthGridImages() {
           }}
         >
           <div className="rounded-bl-xl w-full h-full bg-zinc-950 bg-opacity-50 flex items-center justify-center px-4">
-            <Image src={Auth2Layover} alt={""}></Image>
+            <Image
+              className="w-full  h-full"
+              width={400}
+              height={400}
+              src={Auth2Layover}
+              alt={""}
+            ></Image>
           </div>
         </div>
         <div

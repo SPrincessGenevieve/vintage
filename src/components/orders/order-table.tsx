@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { MockWines } from "@/lib/mock-data";
 import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "@/components/ui/button";

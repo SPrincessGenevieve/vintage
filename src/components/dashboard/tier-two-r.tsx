@@ -6,25 +6,15 @@ import SoldUnitsIcon from "./../../images/SoldUnits.svg";
 import CasesSold from "@/images/cases_sold.svg";
 import Realised from "@/images/realised.svg";
 import { useUserContext } from "@/app/context/UserContext";
+import { UserData } from "@/lib/data/user";
 
 export default function TierTwoR() {
   const {
-    case_due,
-    total_case,
-    total_withdrawn,
     total_withdrawn_state,
-    cases_sold_state,
-    profit_loss_money_state,
     total_cases_state,
-    case_due_state,
     sub_account_list,
-    cases_sold,
-    profit_loss_money,
     user_now_id,
-    total_investments,
-    life_time_investment,
     userData,
-    dashboard_title,
     dashboard_value,
     setUserDetails,
   } = useUserContext();
@@ -32,37 +22,41 @@ export default function TierTwoR() {
   const subItem = [
     {
       item: "Current Investment",
-      value: !dashboard_value ? userData.current_investment : dashboard_value,
+      value: !dashboard_value ? UserData.current_investment : dashboard_value,
       icon: <InvestedIcon></InvestedIcon>,
     },
     {
       item: "Total Cases",
-      value: user_now_id === 0 ? userData.total_case : total_cases_state,
+      value: user_now_id === 0 ? UserData.total_case : total_cases_state,
       icon: <TotalUnitsIcon></TotalUnitsIcon>,
     },
     {
       item: "Total Withdrawn",
-      value: user_now_id === 0 ? userData.total_withdrawn : total_withdrawn_state,
+      value:
+        user_now_id === 0 ? UserData.total_withdrawn : total_withdrawn_state,
 
       icon: <TotalWithdrawnIcon></TotalWithdrawnIcon>,
     },
     {
       item: "Cases Due/ Ordered",
-      value: user_now_id === 0 ? userData.case_due : sub_account_list.case_due,
+      value: user_now_id === 0 ? UserData.case_due : sub_account_list.case_due,
       icon: <SoldUnitsIcon></SoldUnitsIcon>,
     },
     {
       item: "Cases Sold",
-      value: user_now_id === 0 ? userData.cases_sold : sub_account_list.cases_sold,
+      value:
+        user_now_id === 0 ? UserData.cases_sold : sub_account_list.cases_sold,
       icon: <CasesSold></CasesSold>,
     },
     {
       item: "Realised P&L",
-      value: user_now_id === 0 ? userData.profit_loss_money : sub_account_list.profit_loss_money,
+      value:
+        user_now_id === 0
+          ? UserData.profit_loss_money
+          : sub_account_list.profit_loss_money,
       icon: <Realised></Realised>,
     },
   ];
-
 
   // console.log("LEVEL ACTIVE ACCOUNT HERE: ", user_now);
 

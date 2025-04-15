@@ -1,20 +1,12 @@
-"use client";
-
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import MasterCard from "@/images/mastercard.png";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import CreditCard from "@/images/card.png";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
 import UserMasterCard from "../settings/user-mastercard";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useUserContext } from "@/app/context/UserContext";
-import axios from "axios";
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function PaymentDialog() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -63,54 +55,21 @@ export default function PaymentDialog() {
 
       console.log("Payment Method Created:", paymentMethod);
 
-      try {
-        const cardPostResponse = await axios.post(
-          `${apiUrl}/stripe/payment-method`,
-          {
-            stripe_payment_method_id: paymentMethod.id,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: authHeader,
-            },
-          }
-        );
+      // Now update the context with the new payment details:
+      const updatedPayMethod = {
+        id: 1, // Keep or adjust the ID if needed
+        brand: paymentMethod.card?.brand ?? "", // Fallback to empty string if undefined
+        exp_month: paymentMethod.card?.exp_month?.toString() ?? "", // Fallback to empty string if undefined
+        exp_year: paymentMethod.card?.exp_year?.toString() ?? "", // Fallback to empty string if undefined
+        last4: paymentMethod.card?.last4 ?? "", // Fallback to empty string if undefined
+        is_default: true, // Adjust this based on the actual requirement
+        stripe_payment_method_id: paymentMethod.id, // Stripe's payment method ID
+      };
 
-        if (cardPostResponse.status === 200) {
-          console.log(
-            "Payment method successfully sent to backend:",
-            cardPostResponse.data
-          );
-
-          const cardGetResponse = await axios.get(
-            `${apiUrl}/stripe/payment-method`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: authHeader,
-              },
-            }
-          );
-
-          console.log("PAYMENT RESPONSE: ", cardGetResponse.data);
-
-          setUserDetails({
-            pay_method: cardGetResponse.data,
-          });
-        } else {
-          console.error(
-            "Backend API failed to create payment method. Status:",
-            cardPostResponse.status
-          );
-          console.error("Backend Response:", cardPostResponse.data); // Log backend response
-        }
-      } catch (postError: any) {
-        console.error(
-          "Error during POST request to backend:",
-          postError.response?.data || postError.message
-        );
-      }
+      // Update the user context with the new payment method
+      setUserDetails({
+        pay_method: [updatedPayMethod], // Update pay_method as an array of PaymentMethodType objects
+      });
     } catch (error: any) {
       console.error("Error occurred during payment process:", error.message);
       if (error.response) {
@@ -121,16 +80,19 @@ export default function PaymentDialog() {
       }
     } finally {
       setIsProcessing(false);
+      setTimeout(() =>{
+        location.reload()
+      }, 1000)
     }
   };
 
   useEffect(() => {
-    if (!pay_method) {
+    if (!pay_method || pay_method.length === 0) {
       setEmpty(false);
     } else {
       setEmpty(true);
     }
-  });
+  }, [pay_method]);
 
   return (
     <Dialog>
@@ -152,7 +114,6 @@ export default function PaymentDialog() {
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <CardElement className="p-3 rounded-3xl  mt-4 border-[1.5px]" />
-
             <Button className="w-full" type="submit" disabled={isProcessing}>
               {isProcessing ? "Processing..." : "Save"}
             </Button>

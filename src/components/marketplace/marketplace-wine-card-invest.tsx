@@ -17,10 +17,6 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import PortfolioGiftDialog from "../portfolio/portfolio-gift-dialog";
-import PortfolioRequestDialog from "../portfolio/portfolio-request-dialog";
-import { cases } from "@/lib/mock-data";
-import CaseSize from "./case-size";
 import {
   MarketplaceInvest,
   PortfolioType,
@@ -33,8 +29,7 @@ import BuyNowDialog from "./buy-now-dialog";
 import AddToCartDialog from "./add-to-cart-dialog";
 import DiscontinueWine from "./discontinue-wine";
 import { useUserContext } from "@/app/context/UserContext";
-import axios from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   HoverCard,
   HoverCardContent,

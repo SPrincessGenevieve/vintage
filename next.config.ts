@@ -14,12 +14,16 @@ const nextConfig: NextConfig = {
   },
 
   webpack(config) {
-    // Add rule to handle SVG files as React components using @svgr/webpack
-    config.module?.rules.push({
+    // Handle SVG files as React components
+    config.module.rules.push({
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-
+  
+    // Handle PNG and other image files
+    config.module.rules.push({
+    });
+  
     return config;
   },
   

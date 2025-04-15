@@ -13,8 +13,14 @@ import AuthHeader from "@/components/auth/auth-header";
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const AuthWrapper = (props: P) => {
-    const { sessionid, sessionkey, otp_verify, otp_validated, setUserDetails } =
-      useUserContext();
+    const {
+      sessionid,
+      sessionkey,
+      otp_verify,
+      otp_validated,
+      isLoggedIn,
+      setUserDetails,
+    } = useUserContext();
     const router = useRouter();
     const pathname = usePathname();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -24,33 +30,23 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
     useEffect(() => {
       const authenticateUser = async () => {
         try {
-          // console.log("OTP Verify: ", otp_verify);
-          // console.log("OTP Validated: ", otp_validated);
-
-          // Convert otp_verify and otp_validated to boolean values if they are strings
-          const otpVerifyBool = otp_verify === "true";
-          const otpValidatedBool = otp_validated === "true";
-
           // Check if user is authenticated
-          if (otpVerifyBool && otpValidatedBool && sessionid && sessionkey) {
+          if (isLoggedIn) {
             setIsAuthenticated(true);
-          } else {
-            // router.push("/auth/sign-in"); // Redirect to sign-in page
           }
         } catch (error) {
           // router.push("/auth/sign-in");
         } finally {
-          setLoading(false); // Set loading to false after the request
+          setLoading(false);
         }
       };
-
       // Only attempt authentication for protected routes (e.g., "/dashboard")
       if (pathname.startsWith("/dashboard")) {
         authenticateUser();
       } else {
         setLoading(false); // Skip authentication for non-protected routes
       }
-    }, [pathname, sessionid, sessionkey, otp_verify, otp_validated, router]);
+    }, [pathname, isLoggedIn, router]);
 
     // If still loading, show a loading state
     if (loading) {

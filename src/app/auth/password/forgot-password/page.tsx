@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useUserContext } from "@/app/context/UserContext";
 import Loading from "@/components/loading";
+import { useRouter } from "next/navigation";
 
 export default function ForgotPassword() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const router = useRouter()
   const [loading, setLoading] = useState(false); // Loading state added
   const { setUserDetails } = useUserContext();
   const [email, setEmail] = useState("");
@@ -20,38 +20,25 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true); // Set loading to false after the request completes
+    // setLoading(true); // Set loading to false after the request completes
 
     if (email === "") {
       setLoading(false);
       setMessage(true);
       setMessageColor("red");
       setTextMessage("Please input your email.");
-      
+
       return;
     }
 
-    try {
-      const response = await axios.post(`${apiUrl}/auth/password/reset/`, {
-        email,
-      });
-
-      if (response.status === 200) {
-        setUserDetails({ email });
-        localStorage.setItem("userEmail", email);
-        setMessage(true);
-        setMessageColor("green");
-        setTextMessage("We have sent you a link. Please check your email.");
-      }
-    } catch (error) {
-      setMessage(true);
-      setMessageColor("red");
-      setTextMessage("Failed to send email. Please try again.");
-      console.error("Login error:", error);
-      setLoading(false);
-    } finally {
-      setLoading(false); // Set loading to false after the request completes
-    }
+    setMessage(true);
+    setMessageColor("green");
+    setTextMessage("Please wait. Redirecting...");
+    
+    setTimeout(() => {
+      router.push("/auth/password/forgot-password/reset")
+      // setLoading(false);
+    }, 3000);
   };
 
   return (

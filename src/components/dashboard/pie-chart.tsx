@@ -9,12 +9,13 @@ import {
 } from "@/components/ui/chart";
 import { Pie, PieChart, Legend } from "recharts";
 import { useUserContext } from "@/app/context/UserContext";
+import { UserData } from "@/lib/data/user";
 
 // Default chartConfig
 const chartConfig = {} satisfies ChartConfig;
 
 export default function PieCharts() {
-  const { assets_by_region } = useUserContext();
+  const assets_by_region = UserData.assets_by_region
   const [innerRadius, setInnerRadius] = useState(65);
 
   useEffect(() => {

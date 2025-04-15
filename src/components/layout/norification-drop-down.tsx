@@ -15,6 +15,8 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import SpinnerIcon from "@/images/Spinner";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { notification } from "@/lib/data/notification";
+import NoImage from "@/images/no-image.png";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -26,15 +28,13 @@ interface ReadType {
 }
 
 export default function NotificationDropdown() {
-  const { sessionkey, notification_count, setUserDetails } = useUserContext();
-  const [notifData, setNotifData] = useState<NotificationType[] | null>(null);
   const [loadingState, setLoadingState] = useState<{ [key: number]: string }>(
     {}
   );
+  const notifData = notification;
+  const notification_count = notification.length;
   const [readStatus, setReadStatus] = useState<{ [key: number]: boolean }>({});
   const [open, setOpen] = useState(false);
-  const authHeader = "Token " + sessionkey;
-  const [countNotif, setCountNotif] = useState(0)
 
   // Load readStatus from localStorage on component mount
   useEffect(() => {
@@ -44,80 +44,13 @@ export default function NotificationDropdown() {
     }
   }, []);
 
-  const [isRead, setIsRead] = useState<ReadType>({
-    read: false,
-    id: 0,
-    borderColor: "border-[#5b94ff]",
-    bgColor: "bg-[#d3e2ff]",
-  });
-
   const handleAccept = async (investment: number, id: number) => {
-    console.log("INVESTMENT: ", investment)
+    console.log("INVESTMENT: ", investment);
     setLoadingState((prevState) => ({ ...prevState, [id]: "accepting" }));
-    try {
-      const response = await axios.post(
-        `${apiUrl}/auth/notification/?accept=true`,
-        {
-          investment_id: investment,
-          alert_id: id,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
 
-      if (response.status === 200 || response.status === 201) {
-        console.log("ACCEPTED");
-        const response = await axios.get(`${apiUrl}/auth/notification/`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        });
-        setNotifData(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-    } finally {
+    setTimeout(() => {
       setLoadingState((prevState) => ({ ...prevState, [id]: "" }));
-    }
-  };
-
-  const handleReject = async (investment: number, id: number) => {
-    setLoadingState((prevState) => ({ ...prevState, [id]: "rejecting" }));
-    try {
-      const response = await axios.post(
-        `${apiUrl}/auth/notification/?reject=true`,
-        {
-          investment_id: investment,
-          alert_id: id,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
-
-      if (response.status === 200 || response.status === 201) {
-        console.log("REJECTED");
-        const response = await axios.get(`${apiUrl}/auth/notification/`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        });
-        setNotifData(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-    } finally {
-      setLoadingState((prevState) => ({ ...prevState, [id]: "" }));
-    }
+    }, 1000);
   };
 
   const handleRead = (id: number) => {
@@ -133,37 +66,7 @@ export default function NotificationDropdown() {
 
   const handleNotif = async () => {
     setOpen(!open);
-    let count = 0
-    try {
-      const response = await axios.get(`${apiUrl}/auth/notification/`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: authHeader,
-        },
-      });
-      setNotifData(response.data);
-      setUserDetails({
-        notifications: response.data,
-        notification_count: response.data.length()
-      });
-      console.log("NOTIF COUNT: ", response.data.length())
-      setCountNotif(count)
-    } catch (error) {
-      console.error("Error fetching notifications:", error);
-    }
-    console.log("\n\n\n\n\n\n\n\n");
-    console.log("COUNTING: ", count);
-    console.log("\n\n\n\n\n\n\n\n");
   };
-
-  useEffect(() =>{
-    setUserDetails({
-      notification_count: countNotif
-    })
-  }, [countNotif])
-
-
-
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -207,7 +110,7 @@ export default function NotificationDropdown() {
                       className="w-auto h-[70px]"
                       width={400}
                       height={400}
-                      src={item.wine_image || item.image}
+                      src={item.wine_image || item.image || NoImage}
                       alt={""}
                     ></Image>
                   </div>
@@ -221,7 +124,9 @@ export default function NotificationDropdown() {
                     {item.is_gift === true ? (
                       <>
                         <Button
-                          onClick={() => handleAccept(item.investment, item.id)}
+                          onClick={() =>
+                            handleAccept(item.investment ?? 0, item.id)
+                          }
                           className="rounded-2xl text-[11px] p-0 m-0 h-5 w-[75px]"
                         >
                           <div
@@ -236,7 +141,9 @@ export default function NotificationDropdown() {
                           Accept
                         </Button>
                         <Button
-                          onClick={() => handleReject(item.investment, item.id)}
+                          onClick={() =>
+                            handleAccept(item.investment ?? 0, item.id)
+                          }
                           className="rounded-2xl text-[11px] p-0 m-0 h-5 bg-[#701212] w-[75px]"
                         >
                           <div
@@ -280,7 +187,9 @@ export default function NotificationDropdown() {
                               className="w-[150px] h-auto"
                               width={400}
                               height={400}
-                              src={item.wine_image || item.wine_image}
+                              src={
+                                item.wine_image || item.wine_image || NoImage
+                              }
                               alt={""}
                             ></Image>
                           </div>

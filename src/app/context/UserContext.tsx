@@ -774,9 +774,11 @@ type UserContextType = {
   select_case_size_investment: number | null | undefined;
   sub_account_list: SubAccountList;
   botVisibility: boolean;
+  isLoggedIn: boolean;
 };
 
 const defaultUserContext: UserContextType = {
+  isLoggedIn: false,
   sub_account_list: {
     sub_account_info: {
       id: 0,

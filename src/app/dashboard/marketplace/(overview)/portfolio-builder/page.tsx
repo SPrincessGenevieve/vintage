@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { MockWinesFromBuilder } from "@/lib/mock-data";
 import WineCard from "@/components/marketplace/wines-card";
 import PortfolioWineCard from "@/components/portfolio/portfolio-wine-card";
 import PortfolioBuilderForm from "@/components/marketplace/portfolio-builder-form";

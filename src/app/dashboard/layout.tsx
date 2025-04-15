@@ -18,45 +18,8 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname(); // Get the current pathname
-  const [aiBot, setAIBot] = useState("hidden");
-  const [assistBot, setAssistBot] = useState("hidden");
-  const { sessionkey, setUserDetails } = useUserContext();
+  const pathname = usePathname(); 
 
-  // useEffect(() => {
-  //   async function fetchDataOrder() {
-  //     const authHeader = "Token " + sessionkey;
-
-  //     try {
-  //       // Make a request to your backend to get the SetupIntent clientSecret using axios
-  //       const response = await axios.get(`${LinkApi.href}/cart-items/`, {
-  //         headers: {
-  //           Authorization: authHeader,
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-
-  //       // console.log("Data: ", response.data);
-
-  //       const itemCount = Array.isArray(response.data)
-  //         ? response.data.length
-  //         : 0;
-
-  //       // Set the cart count state with the number of items
-  //       setUserDetails({
-  //         cartCount: itemCount,
-  //       });
-  //     } catch (error) {
-  //       console.error("Error fetching orders:", error);
-  //     }
-  //   }
-
-  //   if (sessionkey) {
-  //     fetchDataOrder(); // Fetch only when sessionkey are available
-  //   }
-  // }, [sessionkey]); // Only re-run the effect when sessionkey changes
-
-  // Check if the current route is /dashboard/orders
   const isOrdersPage =
     pathname === "/dashboard/orders" || "/dashboard/checkout";
 

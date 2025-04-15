@@ -1,5 +1,4 @@
 "use client";
-import { MockWines } from "@/lib/mock-data";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import PortfolioWineCard from "@/components/portfolio/portfolio-wine-card";

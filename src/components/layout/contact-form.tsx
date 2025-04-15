@@ -17,35 +17,14 @@ export default function ContactForm() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
-  const authHeader = "Token " + sessionkey;
-
   const handleSubmitMessage = async () => {
     setLoading(true);
-    try {
-      const response = await axios.post(
-        `${apiUrl}/contact-support`,
-        {
-          message: message,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
+    setTimeout(() => {
       setSuccess(true);
-    } catch (error) {
-      console.log("ERROR");
-      setError(true);
-    } finally {
-      setLoading(false);
-      setTimeout(() => {
-        setSuccess(false);
-        setError(false);
-      }, 4000);
-    }
+      location.reload();
+    }, 2000);
   };
+
   return (
     <div className="flex flex-col gap-2 mt-2">
       <div className="flex flex-col gap-3">

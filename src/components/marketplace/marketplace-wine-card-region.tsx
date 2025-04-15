@@ -21,7 +21,6 @@ import {
   MarketplaceInvest,
   VintageWineType,
   WineParentType,
-  WineType,
 } from "@/app/context/UserContext";
 import Image from "next/image";
 import { useUserContext } from "@/app/context/UserContext";
@@ -31,7 +30,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { cases } from "@/lib/mock-data";
 
 interface Visibility {
   label: string;

@@ -9,10 +9,10 @@ export default function MobileAppsLinks() {
       <h5 className="text-center text-[12px]">We’re also available on</h5>
       <div className="flex items-center justify-center gap-5 mt-6">
         <Link href="#">
-          <Image alt="app-store" src={AppStore} className="h-15" priority />
+          <Image width={400} height={400} alt="app-store" src={AppStore} className="h-15" priority />
         </Link>
         <Link href="#">
-          <Image alt="google-play" src={GooglePlay} className="h-15" priority />
+          <Image  width={400} height={400} alt="google-play" src={GooglePlay} className="h-15" priority />
         </Link>
       </div>
     </div>

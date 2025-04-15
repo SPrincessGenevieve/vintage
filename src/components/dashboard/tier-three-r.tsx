@@ -6,11 +6,11 @@ import { Circle } from "lucide-react";
 import * as echarts from "echarts";
 import PieCharts from "./pie-chart";
 import { useUserContext } from "@/app/context/UserContext";
+import { UserData } from "@/lib/data/user";
 
 export default function TierThreeR() {
-  const { assets_by_region } = useUserContext();
-  const [color, setColor] = useState("");
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
+  const assets_by_region = UserData.assets_by_region;
 
   const regionColors: { [key: string]: string } = {
     Bordeaux: "#104144",
@@ -87,7 +87,7 @@ export default function TierThreeR() {
   }, [assets_by_region]); // Depend on assets_by_region to re-render chart when it changes
 
   return (
-    <div className="flex-grow w-full h-[95%] bg-white rounded-xl flex flex-col">
+    <div className="flex-grow w-full h-[100%] bg-white rounded-xl flex flex-col">
       <div className="p-2 py-4 w-full flex justify-between">
         <div className="flex gap-2 items-center">
           <MapPinned color="#2E5257" size={15} />

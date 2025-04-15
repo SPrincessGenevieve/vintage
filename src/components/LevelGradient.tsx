@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { MockProfileLevelData } from "@/lib/mock-data";
 import Image from "next/image";
-import { useUserContext } from "@/app/context/UserContext";
 import { HoverCard, HoverCardTrigger, HoverCardContent } from "./ui/hover-card";
+import { UserData } from "@/lib/data/user";
 
 export default function LevelGradient() {
-  const { level_info } = useUserContext();
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const level_info = UserData.level_info
+  const [hover, setHover] = useState<number | null>(null);
   const level_name = !level_info || !level_info.name ? "VINTAGE" : level_info.name;
 
   return (
@@ -24,10 +24,10 @@ export default function LevelGradient() {
               style={{
                 background:
                   item.name === level_name
-                    ? hoverIndex !== null && hoverIndex !== index
+                    ? hover !== null && hover !== index
                       ? "linear-gradient(to bottom, #D0D0D0, #D0D0D0)" // Change to grey if hovering over another item
                       : `linear-gradient(to bottom, ${item.hoverFrom}, ${item.hoverTo})` // Default for VINTAGE
-                    : hoverIndex === index
+                    : hover === index
                     ? `linear-gradient(to bottom, ${item.hoverFrom}, ${item.hoverTo})` // Hover effect for other items
                     : "linear-gradient(to bottom, #D0D0D0, #D0D0D0)", // Default grey for other items
                 transition: "background 0.3s ease", // Smooth transition on hover

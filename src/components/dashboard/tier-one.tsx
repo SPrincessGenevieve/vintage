@@ -1,14 +1,13 @@
 "use client";
 
 import React from "react";
-import { useUserContext } from "@/app/context/UserContext";
+import { UserData } from "@/lib/data/user";
 
 export default function TierOne() {
-  const { balance, current_market_value, profit_loss } = useUserContext(); // Get balance, current_market_value, and profit_loss from user context
   const tierData = [
-    { name: "Account Balance", value: balance },
-    { name: "Current Market Value", value: current_market_value },
-    { name: "Profit / Loss", value: profit_loss },
+    { name: "Account Balance", value: UserData.balance },
+    { name: "Current Market Value", value: UserData.current_market_value },
+    { name: "Profit / Loss", value: UserData.profit_loss },
   ];
 
   // Function to format numbers with commas and decimals when necessary

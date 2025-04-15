@@ -13,25 +13,14 @@ import Loading from "../loading";
 import MobileAppsLinks from "./mobile-apps-links";
 
 export default function SigninForm() {
-  const {
-    setUserDetails,
-    sessionid,
-    oldemail,
-    sessionkey,
-    otp_verify,
-    otp_validated,
-    kyc_verify,
-  } = useUserContext();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state added
-  const [otpUrl, setOtpUrl] = useState<string | null>(null);
-  const [veriff, setVeriff] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useRouter();
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const defaultEmail = "example@gmail.com";
+  const defaultPassword = "Password1234";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,134 +29,15 @@ export default function SigninForm() {
       email: email,
       password: password,
     };
-    try {
-      const response = await axios.post(`${apiUrl}/auth/sign-in/`, {
-        email,
-        password,
-      });
 
-      if (response.data.key) {
-        setUserDetails({
-          email: email,
-          oldemail: email,
-          password: password,
-          password1: password,
-          // otp_validated: response.data.otp_enabled,
-          mfa: response.data.mfa,
-          sessionkey: response.data.key,
-          kyc_verify: response.data.kyc_status,
-        });
-
-        localStorage.setItem("key", response.data.key);
-        localStorage.setItem("otp_enabled", response.data.otp_enabled);
-        localStorage.setItem("kyc_status", response.data.kyc_status);
-        localStorage.setItem("mfa", response.data.mfa);
-        localStorage.setItem("email", response.data.email);
-        localStorage.setItem("oldemail", response.data.oldemail);
-      }
-
-      const authHeader = "Token " + sessionkey;
-
-      console.log("Sign-in: ", response.data);
-
-      if (response.data.otp_enabled === false) {
-        console.log("Here 1");
-        const otpResponse = await axios.post(
-          `${apiUrl}/auth/otp/generate/`,
-          {},
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: authHeader,
-            },
-          }
-        );
-
-        const { otpauth_url } = otpResponse.data;
-        setOtpUrl(otpauth_url);
-        navigate.push(
-          `/auth/sign-up-5?otpauth_url=${encodeURIComponent(otpauth_url)}`
-        );
-      } else {
-        console.log("Here 2");
-
-        if (!sessionid) {
-          navigate.push("/auth/mfa");
-        } else {
-          if (email === oldemail) {
-            if (
-              otp_validated.toString() === "true" &&
-              otp_verify === "true"
-              // kyc_verify === "approved"
-            ) {
-              setUserDetails({
-                otp_validated: "true",
-                otp_verify: "true",
-                kyc_verify: "approved",
-              });
-              navigate.push("/dashboard");
-            } else if (
-              otp_validated.toString() === "false" ||
-              otp_verify === "false"
-            ) {
-              const otpResponse = await axios.post(
-                `${apiUrl}/auth/otp/generate/`,
-                {},
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: authHeader,
-                  },
-                }
-              );
-
-              const { otpauth_url } = otpResponse.data;
-              setOtpUrl(otpauth_url);
-              navigate.push(
-                `/auth/sign-up-5?otpauth_url=${encodeURIComponent(otpauth_url)}`
-              );
-            } else if (kyc_verify !== "approved") {
-              const veriffResponse = await axios.post(
-                `${apiUrl}/auth/kyc/verify`,
-                {},
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: authHeader,
-                  },
-                }
-              );
-
-              const { verification_url } = veriffResponse.data;
-              setVeriff(verification_url);
-
-              if (veriffResponse.status === 200) {
-                setError("Success. Logging in.");
-
-                setUserDetails({
-                  otp_validated: "true",
-                  otp_verify: "true",
-                  kyc_verify: "approved",
-                });
-
-                navigate.push(
-                  `/auth/sign-up-4?verification_url=${encodeURIComponent(
-                    verification_url
-                  )}`
-                );
-              } else {
-                setError("KYC verification failed.");
-              }
-            }
-          }
-          // else {
-          //   navigate.push("/auth/mfa");
-          // }
-        }
-      }
-    } catch (error) {
+    if (email === defaultEmail && password === defaultPassword) {
+      setLoading(false);
+      navigate.push(`/auth/sign-up-5`);
+    } else {
       setError("Incorrect email or password.");
-    } finally {
+      setTimeout(() => {
+        setError("");
+      }, 3000);
       setLoading(false);
     }
   };

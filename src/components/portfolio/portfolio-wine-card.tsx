@@ -1,13 +1,9 @@
 "use client";
 
 import {
-  CircleAlert,
   Plus,
   Minus,
-  Dot,
-  EllipsisIcon,
   EllipsisVerticalIcon,
-  Wine,
   Grape,
   MapPinned,
   AlertCircleIcon,
@@ -31,10 +27,6 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import PortfolioGiftDialog from "./portfolio-gift-dialog";
-import PortfolioRequestDialog from "./portfolio-request-dialog";
-import YearSelection from "../marketplace/year-selection";
-import { cases } from "@/lib/mock-data";
 import CaseSize from "../marketplace/case-size";
 import {
   PortfolioType,
@@ -46,8 +38,6 @@ import {
   Select,
   SelectTrigger,
   SelectValue,
-  SelectItem,
-  SelectContent,
 } from "../ui/select";
 import {
   HoverCard,
@@ -229,19 +219,17 @@ export default function PortfolioWineCard({
   const case_size = Number(item.case_size);
   const processed_case = Number(item.wine_vintage_details.processed_case);
   const bottleSizeVal =
-  bottleSize === "1500" ? 2 : bottleSize === "3000" ? 4 : 8;
+    bottleSize === "1500" ? 2 : bottleSize === "3000" ? 4 : 8;
 
+  console.log("MARKET PRICE: ", marketPriceVal);
+  console.log("QUANTITY: ", quantity);
+  console.log("IS SPECIAL VOLUME: ", is_special_volumes);
+  console.log("IS USER INVESTMENT: ", is_user_investment);
+  console.log("BOTTLE SIZE: ", bottleSize);
+  console.log("BOTTLE SIZE: ", bottleSizeVal);
+  console.log("CASE SIZE: ", case_size);
+  console.log("PROCESSED CASE: ", processed_case);
 
-  console.log("MARKET PRICE: ", marketPriceVal)
-  console.log("QUANTITY: ", quantity)
-  console.log("IS SPECIAL VOLUME: ", is_special_volumes)
-  console.log("IS USER INVESTMENT: ", is_user_investment)
-  console.log("BOTTLE SIZE: ", bottleSize)
-  console.log("BOTTLE SIZE: ", bottleSizeVal)
-  console.log("CASE SIZE: ", case_size)
-  console.log("PROCESSED CASE: ", processed_case)
-
- 
   console.log(
     "MARKET VALUEEEE: ",
     item.basket_details !== null && is_user_investment

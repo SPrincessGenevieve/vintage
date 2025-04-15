@@ -1,32 +1,22 @@
 "use client";
 
 import { Check } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { MockProfileLevelData } from "@/lib/mock-data";
-import { Pridi } from "next/font/google";
 import "./../../app/globals.css";
 import { useUserContext } from "@/app/context/UserContext";
-import axios from "axios";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "../ui/hover-card";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-const pridi = Pridi({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-});
-
 export default function PortfolioLevel() {
   const { level_info, sessionkey, setUserDetails } = useUserContext();
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const level_name =
     !level_info || !level_info.name ? "VINTAGE" : level_info.name;
-  const level_fee = !level_info || !level_info.fee ? 2.75 : level_info.fee;
 
   // Get the current level's index from the MockProfileLevelData
   const currentLevelIndex = MockProfileLevelData.findIndex(

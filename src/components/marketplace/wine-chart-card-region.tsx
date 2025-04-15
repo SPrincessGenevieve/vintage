@@ -1,13 +1,5 @@
 "use client";
 import Chart from "../chart";
-import { MockChartData } from "@/lib/mock-data";
-import ChartStatisticsCard from "./chart-statistics-card";
-import { StatisticMock } from "@/lib/mock-data";
-import rp_score from "@/icons/rp_score.png";
-import drinking_win from "@/icons/drinking_window.png";
-import reviewed_by from "@/icons/reviewed_by.png";
-import review_date from "@/icons/review_date.png";
-import Image from "next/image";
 import { WineParentType, VintageWineType } from "@/app/context/UserContext";
 import React, { useEffect, useState } from "react";
 import axios from "axios";

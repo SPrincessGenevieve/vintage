@@ -12,8 +12,8 @@ import { useRouter } from "next/navigation";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function DepositForm() {
-  const router = useRouter()
-  const { link_account, sessionkey, setUserDetails } = useUserContext();
+  const router = useRouter();
+  const { sessionkey, setUserDetails } = useUserContext();
   const authHeader = "Token " + sessionkey;
   const [amount, setAmount] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,12 @@ export default function DepositForm() {
   const [warning, setWarning] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  console.log("AMOUNT: ", amount)
+
+  const [link_account, setLinkToken] = useState(
+    "link-sandbox-12345678-90ab-cdef-1234-567890abcdef"
+  );
+
+  console.log("AMOUNT: ", amount);
   const handleDeposit = async () => {
     if (amount <= 0 || !amount) {
       setBorderColor("border-[red]");
@@ -33,35 +38,11 @@ export default function DepositForm() {
       return;
     }
     setLoading(true);
-
-    try {
-      const response = await axios.post(
-        `${apiUrl}/plaid/deposit`,
-        {
-          value: amount,
-        },
-        {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      setUserDetails({
-        link_account: response.data,
-      });
-      router.push(`/dashboard/settings/billing/link-account/${response.data.link_token}`)
-    } catch (error) {
-      console.log("ERROR: ", error);
-      setError(true);
-      setErrorMessage("You already have a pending withdrawal request.");
-    } finally {
+    setTimeout(() => {
       setLoading(false);
-      setTimeout(() => {
-        setError(false);
-      }, 3000);
-    }
+      setError(false);
+      router.push(`/dashboard/settings/billing/link-account/${link_account}`);
+    }, 2000);
   };
 
   console.log("LINKING ACCOUNT: ", link_account);
@@ -85,7 +66,11 @@ export default function DepositForm() {
         {warning && <p className="text-[red]">Please input more than 0</p>}
         {error && <p className="text-[red]">{errorMessage}</p>}
       </div>
-      <Button onClick={handleDeposit} size="sm" className="text-sm w-full rounded-3xl">
+      <Button
+        onClick={handleDeposit}
+        size="sm"
+        className="text-sm w-full rounded-3xl"
+      >
         {loading && (
           <div>
             <SpinnerIcon strokeColor="white"></SpinnerIcon>

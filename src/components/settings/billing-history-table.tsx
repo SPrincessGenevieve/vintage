@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BillingHistory } from "@/lib/mock-data";
 import { useUserContext } from "@/app/context/UserContext";
 import axios from "axios";
 

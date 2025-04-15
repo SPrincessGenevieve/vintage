@@ -1,22 +1,16 @@
 "use client";
 
 import {
-  CircleAlert,
   Plus,
   Minus,
-  Dot,
-  EllipsisIcon,
   EllipsisVerticalIcon,
-  Wine,
   Grape,
   MapPinned,
   AlertCircleIcon,
 } from "lucide-react";
-import type { WineCardT } from "@/lib/types";
 import { useState, useEffect } from "react";
 import SellDialog from "./sell-to-cart-dialog";
 import BuyDialog from "./buy-now-dialog";
-import ImageSlider from "../image-slider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,10 +25,6 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import PortfolioGiftDialog from "./portfolio-gift-dialog";
-import PortfolioRequestDialog from "./portfolio-request-dialog";
-import YearSelection from "../marketplace/year-selection";
-import { cases } from "@/lib/mock-data";
 import CaseSize from "../marketplace/case-size";
 import {
   PortfolioType,
@@ -46,8 +36,6 @@ import {
   Select,
   SelectTrigger,
   SelectValue,
-  SelectItem,
-  SelectContent,
 } from "../ui/select";
 import {
   HoverCard,

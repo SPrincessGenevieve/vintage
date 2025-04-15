@@ -5,9 +5,6 @@ import {
   Minus,
   Grape,
   MapPinned,
-  Wine,
-  StopCircle,
-  AlertCircleIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
@@ -17,38 +14,20 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import PortfolioGiftDialog from "../portfolio/portfolio-gift-dialog";
-import PortfolioRequestDialog from "../portfolio/portfolio-request-dialog";
-import { cases } from "@/lib/mock-data";
-import CaseSize from "./case-size";
 import {
   BigBottlesListType,
-  MarketplaceInvest,
-  PortfolioType,
-  VintageWineType,
   WineDetailsBigBottleType,
   WineParentBigBottleType,
-  WineParentType,
 } from "@/app/context/UserContext";
 import Image from "next/image";
 import { Select, SelectTrigger, SelectValue } from "../ui/select";
-import BuyNowDialog from "./buy-now-dialog";
-import AddToCartDialog from "./add-to-cart-dialog";
-import DiscontinueWine from "./discontinue-wine";
 import { useUserContext } from "@/app/context/UserContext";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "../ui/hover-card";
 import SpecialVolBuyNowDialog from "./special-vol-buy-now-dialog";
 import SpecialVolAddToCartDialog from "./special-vol-add-to-cart-dialog";
-import { Value } from "@radix-ui/react-select";
 import CaseSizeSpecialVolume from "./case-size-special-volume";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
 interface Visibility {
   label: string;
@@ -234,8 +213,6 @@ export default function MarketplaceWineCardSpecialVolume({
     hide();
   }, []);
 
-  
-
   const bottleSizeMap: { [key: number]: number } = {
     1500: 150,
     3000: 300,
@@ -249,19 +226,16 @@ export default function MarketplaceWineCardSpecialVolume({
     return sizeA - sizeB;
   });
 
-  const marketValue = Number(sortedVintageAll[selectedCaseSize].market_value)
+  const marketValue = Number(sortedVintageAll[selectedCaseSize].market_value);
   // const marketValue = sortedVintageAll.map((item) => item.market_value)
   console.log("Selected Case Size: ", select_case_size_special);
   console.log("All: ", sortedVintageAll);
 
   useEffect(() => {
-    setTotalMarketPrice(
-      Math.round(Number(marketValue || 0))
-    );
- 
+    setTotalMarketPrice(Math.round(Number(marketValue || 0)));
   }, [select_case_size_special]);
-  console.log("MARKET VALUE: ", marketValue)
-  console.log("SELECTED CASE SIZE VALUE: ", select_case_size_special)
+  console.log("MARKET VALUE: ", marketValue);
+  console.log("SELECTED CASE SIZE VALUE: ", select_case_size_special);
 
   return (
     <div className="h-full  bg-white w-full p-3 border rounded-2xl flex port-info-cont glass-slide-cont">

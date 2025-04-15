@@ -8,7 +8,6 @@ import { UserProvider } from "./context/UserContext";
 import { useEffect, useState } from "react";
 import withAuth from "./withAuth";
 import Bot from "@/components/bot";
-import { PostHogProvider } from "./providers";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -47,9 +46,7 @@ export default function RootLayout({
       {/* Conditionally render scripts based on the current route */}
 
       <body className={`${poppins.variable} antialiased`}>
-        <UserProvider>
-          <PostHogProvider>{children}</PostHogProvider>
-        </UserProvider>
+        <UserProvider>{children}</UserProvider>
         <ToastContainer style={{ width: 400 }} />
       </body>
     </html>

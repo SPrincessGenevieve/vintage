@@ -1,20 +1,16 @@
 "use client";
 
 import {
-  CircleAlert,
   Plus,
   Minus,
   Wine,
   MapPinned,
   Grape,
-  Star,
-  StarIcon,
 } from "lucide-react";
 import Start from "@/images/star.gif";
 import { useEffect, useState } from "react";
 import AddToCartDialog from "./add-to-cart-dialog";
 import BuyNowDialog from "./buy-now-dialog";
-import ImageSlider from "../image-slider";
 import { Button } from "../ui/button";
 import CaseSize from "./case-size";
 import YearSelection from "./year-selection";
@@ -22,7 +18,6 @@ import {
   MarketplaceInvest,
   VintageWineType,
   WineParentType,
-  WineType,
 } from "@/app/context/UserContext";
 import Image from "next/image";
 import { useUserContext } from "@/app/context/UserContext";
@@ -32,8 +27,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
-import { cases } from "@/lib/mock-data";
-import StarRating from "./star-rating";
 import WineChart from "./wine-chart-card";
 
 interface Visibility {

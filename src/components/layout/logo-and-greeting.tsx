@@ -1,9 +1,10 @@
 import Image from "next/image";
 import favicon from "@/app/favicon.ico";
 import { useUserContext } from "@/app/context/UserContext";
+import { UserData } from "@/lib/data/user";
 
 export default function LogoAndGreetings() {
-  const {first_name, userData} = useUserContext()
+  const userData = UserData
   return (
     <div className="flex h-12 justify-between items-center">
       <div className="flex items-center ml-2">

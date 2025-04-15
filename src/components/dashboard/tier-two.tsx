@@ -18,9 +18,11 @@ import {
 } from "@/components/ui/menubar";
 import { Input } from "../ui/input";
 import { ChevronDown } from "lucide-react";
+import { UserData } from "@/lib/data/user";
 
 export default function TierTwo() {
-  const { portfolio_performance } = useUserContext();
+  // const { portfolio_performance } = useUserContext();
+  const portfolio_performance = UserData.portfolio_performance
 
   // Time filter options
   const timeFilters = {
@@ -138,9 +140,7 @@ export default function TierTwo() {
               domain={[
                 Math.floor(
                   Math.min(
-                    ...filteredData.map(
-                      (item: any) => item.value ?? 0
-                    )
+                    ...filteredData.map((item: any) => item.value ?? 0)
                   ) / increment
                 ) * increment, // Round down to nearest increment
                 Math.ceil(domainMaxValue / increment) * increment, // Round up to nearest increment

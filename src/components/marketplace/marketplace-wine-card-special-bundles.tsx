@@ -17,17 +17,9 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import PortfolioGiftDialog from "../portfolio/portfolio-gift-dialog";
-import PortfolioRequestDialog from "../portfolio/portfolio-request-dialog";
-import { cases } from "@/lib/mock-data";
-import CaseSize from "./case-size";
 import {
-  MarketplaceInvest,
-  PortfolioType,
   SpecialBundleDetails,
   SpecialBundlesList,
-  VintageWineType,
-  WineParentType,
 } from "@/app/context/UserContext";
 import Image from "next/image";
 import { Select, SelectTrigger, SelectValue } from "../ui/select";
@@ -35,13 +27,6 @@ import BuyNowDialog from "./buy-now-dialog";
 import AddToCartDialog from "./add-to-cart-dialog";
 import DiscontinueWine from "./discontinue-wine";
 import { useUserContext } from "@/app/context/UserContext";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "../ui/hover-card";
 import BuyNowSpecialBundlesDialog from "./buy-now-special-bundles-dialog";
 import AddToCartSpecialBundlesDialog from "./add-to-cart-special-bundles-dialog";
 
