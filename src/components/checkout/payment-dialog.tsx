@@ -7,6 +7,7 @@ import CreditCard from "@/images/card.png";
 import UserMasterCard from "../settings/user-mastercard";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useUserContext } from "@/app/context/UserContext";
+import { UserData } from "@/lib/data/user";
 
 export default function PaymentDialog() {
   const [isProcessing, setIsProcessing] = useState(false);
@@ -14,6 +15,7 @@ export default function PaymentDialog() {
   const stripe = useStripe();
   const elements = useElements();
   const { pay_method, sessionkey, setUserDetails } = useUserContext();
+  const payment_method = UserData.payment_methods
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();

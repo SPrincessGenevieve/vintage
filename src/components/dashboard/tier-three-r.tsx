@@ -10,7 +10,7 @@ import { UserData } from "@/lib/data/user";
 
 export default function TierThreeR() {
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
-  const assets_by_region = UserData.assets_by_region;
+  const { assets_by_region } = useUserContext();
 
   const regionColors: { [key: string]: string } = {
     Bordeaux: "#104144",
@@ -25,8 +25,11 @@ export default function TierThreeR() {
 
   // Calculate the sum of all asset values
   const totalAssets = assets_by_region
-    ? Object.values(assets_by_region).reduce((acc, value) => acc + value, 0)
-    : 0; // Return 0 if assets_by_region is undefined or null
+    ? Object.values(assets_by_region).reduce(
+        (acc, value) => (acc ?? 0) + (value ?? 0),
+        0
+      )
+    : 0;
 
   useEffect(() => {
     // Initialize the chart when the component mounts
@@ -104,7 +107,9 @@ export default function TierThreeR() {
         <div className="legend-cont absolute bottom-0 leading-3 grid grid-cols-3 gap-2 w-full h-auto min-h-[25%] p-4">
           {assets_by_region
             ? Object.entries(assets_by_region).map(([region, value], index) => {
-                const percentage = ((value / totalAssets) * 100).toFixed(2); // Calculate percentage
+                const percentage = totalAssets
+                  ? (((value ?? 0) / totalAssets) * 100).toFixed(2)
+                  : "0.00";
                 const color =
                   regionColors[region as keyof typeof regionColors] ||
                   "#808080"; // Use type assertion

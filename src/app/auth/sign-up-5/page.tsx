@@ -95,11 +95,11 @@ export default function SignupFive() {
     setSuccess(true);
     setHideError(false);
     setTimeout(() => {
-      setLoading(false);
       setUserDetails({
         isLoggedIn: true
       })
       router.push("/dashboard");
+      setLoading(false);
     }, 1000);
   };
 

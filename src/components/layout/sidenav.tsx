@@ -33,7 +33,6 @@ export default function Sidenav() {
     }
   }, [pathname, is_old_user]);
 
-  console.log("USER: ", is_old_user)
 
   return (
     <div className="hidden md:flex lg:flex-shrink-0 bg-white">

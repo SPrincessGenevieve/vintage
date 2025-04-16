@@ -16,8 +16,8 @@ type PortfolioPerformanceType = {
 
 type InvestmentType = {
   wine_name: string;
-  vintage: number;
-  wine_images: string | File | null;
+  vintage: number | null;
+  wine_images: string[];
   held: string;
   wines_investment_value: number | null;
 };
@@ -421,11 +421,13 @@ export type SubAccountInvestments = {
   held: string;
 };
 
+
+
 export type SubAccountList = {
   sub_account_info: SubAccountType;
   portfolio_performance: PortfolioPerformanceType[];
   current_market_value: number;
-  assets_by_region: { [region: string]: number };
+  assets_by_region: { [region: string]: number | undefined };
   case_due: number;
   profit_loss: number;
   total_case: number;
@@ -463,7 +465,7 @@ export type UserType = {
   transactions: TransactionsType[];
   investment: InvestmentType[];
   total_case: number;
-  assets_by_region: { [region: string]: number };
+  assets_by_region: { [region: string]: number | undefined };
   total_investments: string;
   life_time_investment: number;
   total_withdrawn: string;
@@ -638,7 +640,7 @@ type UserContextType = {
   investment: InvestmentType[];
   portfolio_performance: PortfolioPerformanceType[];
   transactions: TransactionsType[];
-  assets_by_region: { [region: string]: number };
+  assets_by_region: { [region: string]: number | undefined };
   phoneNumber: string;
   balance: string;
   total_investments: string;

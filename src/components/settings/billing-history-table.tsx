@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { useUserContext } from "@/app/context/UserContext";
 import axios from "axios";
+import { UserData } from "@/lib/data/user";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -18,27 +19,7 @@ export default function BillingHistoryTable() {
   const { sessionkey } = useUserContext(); // Assuming you're getting email and password from context
   const [loading, setLoading] = useState(true);
 
-  const [transactions, setTransactions] = useState<any[]>([]); // All requests fetched from the server
-
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/user/`, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Token ${sessionkey}`, // Basic auth
-          },
-        });
-        setTransactions(response.data.data.transactions);
-      } catch (error) {
-        console.error("Error fetching transactions", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTransactions();
-  }, [sessionkey]);
+  const transactions = UserData.transactions;
 
   const formatDate = (dateString: string) => {
     const dateObj = new Date(dateString); // Parse the string into a Date object

@@ -24,18 +24,25 @@ import {
 import SubAccountDelete from "./sub-account-delete";
 import AddSubAccountDialog from "../layout/add-sub-account-dialog";
 import SubAccountProfile from "@/images/user-placeholder.jpg";
-import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import SpinnerIcon from "@/images/Spinner";
 import { Select, SelectContent, SelectTrigger } from "../ui/select";
 import { RelationshipSelect } from "@/lib/utils";
 import { SelectItem } from "@radix-ui/react-select";
-
+import { SubAccountData } from "@/lib/data/sub-accounts";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SubAccountsTable() {
-  const { sessionkey, sub_accounts, setUserDetails } = useUserContext();
+  const { sessionkey, setUserDetails } = useUserContext();
+  const sub_accounts = SubAccountData;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,7 +69,7 @@ export default function SubAccountsTable() {
   const [openEditIndex, setOpenEditIndex] = useState<number | null>(null); // Only track which row is open for editing
   const [openDeleteIndex, setOpenDeleteIndex] = useState<number | null>(null); // Only track which row is open for editing
   const [loading, setLoading] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [open, setOpen] = useState(false);
   const [fname, setFName] = useState("");
   const [lname, setLName] = useState("");
   const [bday, setBday] = useState("");
@@ -85,7 +92,9 @@ export default function SubAccountsTable() {
       setFName(sub_accounts[openEditIndex].first_name);
       setLName(sub_accounts[openEditIndex].last_name);
       setBday(sub_accounts[openEditIndex].birth_date);
-      setRelationship(sub_accounts[openEditIndex].relationship || "");
+      setRelationship(
+        sub_accounts[openEditIndex].relationship || ""
+      );
     }
   }, [sub_accounts, openEditIndex]);
 
@@ -122,63 +131,27 @@ export default function SubAccountsTable() {
 
   const handleUpdateSubAccount = async (index: number) => {
     setLoading(true);
-    const sub_account = sub_accounts[index].id;
-    const updatedData: any = {};
 
-    // Check if each field has changed before adding it to the updatedData
-    if (fname !== originalData.fname) updatedData.first_name = fname;
-    if (lname !== originalData.lname) updatedData.last_name = lname;
-    if (bday !== originalData.bday) updatedData.birth_date = bday;
-    if (relationship !== originalData.relationship)
-      updatedData.relationship = relationship;
-
-    const formData = new FormData();
-
-    // Append updated fields to FormData
-    Object.entries(updatedData).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-
-    // Only append the image if a new image has been uploaded
-    if (imageInputRef.current?.files?.length) {
-      formData.append("profile_picture", imageInputRef.current.files[0]);
-    }
-
-    console.log("SUBMITTING DATA: ", formData);
-
-    try {
-      const response = await axios.patch(
-        `${apiUrl}/user/sub-accounts/${sub_account}`,
-        formData,
-        {
-          headers: {
-            Authorization: authHeader,
-            // Do not set "Content-Type" when sending FormData
-            "Content-Type": undefined,
-          },
-        }
-      );
-
-      if (response.status === 200 || response.status === 201) {
-        const response = await axios.get(`${apiUrl}/user/sub-accounts/`, {
-          headers: {
-            Authorization: authHeader,
-          },
-        });
-        setUserDetails({
-          sub_accounts: response.data,
-        });
-      }
-    } catch (error) {
-      console.log("Something went wrong.");
-    } finally {
+    setTimeout(() => {
       setLoading(false);
       setOpenEditIndex(null); // Close the dialog after saving
-    }
+    }, 1000);
+    setTimeout(() => {
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+      }, 2000);
+    }, 1000);
   };
 
   return (
     <div>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogTitle>Success</DialogTitle>
+          <p>Details for sub-account updated successfully.</p>
+        </DialogContent>
+      </Dialog>
       <div className="w-full p-2 flex justify-end">
         <div className="flex justify-center items-center border gap-2 border-[#2E5257] cursor-pointer rounded-full  p-3">
           <PlusCircle stroke="#2E5257" strokeWidth={1} size={20}></PlusCircle>
@@ -210,9 +183,15 @@ export default function SubAccountsTable() {
                   />
                 </div>
               </TableCell>
-              <TableCell className="text-center">{item.first_name}</TableCell>
-              <TableCell className="text-center">{item.last_name}</TableCell>
-              <TableCell className="text-center">{item.birth_date}</TableCell>
+              <TableCell className="text-center">
+                {item.first_name}
+              </TableCell>
+              <TableCell className="text-center">
+                {item.last_name}
+              </TableCell>
+              <TableCell className="text-center">
+                {item.birth_date}
+              </TableCell>
               <TableCell className="text-center capitalize">
                 {item.relationship}
               </TableCell>

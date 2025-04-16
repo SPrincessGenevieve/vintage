@@ -10,6 +10,7 @@ import LogoVintage from "@/images/auth-header.png";
 import Image from "next/image";
 import AuthGridImages from "@/components/auth/auth-grid-images";
 import AuthHeader from "@/components/auth/auth-header";
+import { UserData } from "@/lib/data/user";
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const AuthWrapper = (props: P) => {
@@ -33,6 +34,22 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
           // Check if user is authenticated
           if (isLoggedIn) {
             setIsAuthenticated(true);
+            // setUserDetails({
+            //   email: UserData.email,
+            //   first_name: UserData.first_name,
+            //   last_name: UserData.last_name,
+            //   phone_number: UserData.phone_number,
+            //   budget: UserData.budget,
+            //   birth_date: UserData.birth_date,
+            //   country: UserData.country,
+            //   state: UserData.state,
+            //   city: UserData.city,
+            //   street_address: UserData.street_address,
+            //   postal_code: UserData.postal_code,
+            //   investment_time: UserData.investment_time,
+            //   invested_before: UserData.invested_before,
+            //   profile_picture: UserData.profile_picture,
+            // });
           }
         } catch (error) {
           // router.push("/auth/sign-in");

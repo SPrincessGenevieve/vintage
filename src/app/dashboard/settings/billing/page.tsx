@@ -7,13 +7,14 @@ import WithdrawDialog from "@/components/settings/withdraw-dialog";
 import withAuth from "@/app/withAuth";
 import PaymentDialog from "@/components/checkout/payment-dialog";
 import { useUserContext } from "@/app/context/UserContext";
+import { UserData } from "@/lib/data/user";
 function Billing() {
   const options = {
     // passing the client secret obtained from the server
     clientSecret: "{{CLIENT_SECRET}}",
   };
-
-  const { paid_fee } = useUserContext()
+  
+  const paid_fee = UserData.paid_fee
   
 
   return (

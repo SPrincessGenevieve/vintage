@@ -51,39 +51,20 @@ export default function UpdateEmail() {
   const [messageColor, setMessageColor] = useState("text-red-500"); // Ensure it's a valid Tailwind class
 
   const handleEmail = async () => {
-    const authHeader = "Token " + sessionkey;
-    try {
-      await axios.post(
-        `${apiUrl}/user/request-change-email`,
-        {
-          email: email, // Include the email in the body
-          password: password1, // Include the password in the body
-        },
-        {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "multipart/form-data", // Set content-type to multipart/form-data for file upload
-          },
-        }
-      );
+    console.log("Verification code sent to your current email.");
 
-      console.log("Verification code sent to your current email.");
+    setMessage(
+      <div className="flex gap-2">
+        <Send color="#31C969" />{" "}
+        <p>Verification code sent to your current email.</p>
+      </div>
+    );
+    setMessageColor("text-green-500"); // Use valid Tailwind color class
 
-      setMessage(
-        <div className="flex gap-2">
-          <Send color="#31C969" />{" "}
-          <p>Verification code sent to your current email.</p>
-        </div>
-      );
-      setMessageColor("text-green-500"); // Use valid Tailwind color class
-
-      setDisable(false);
-      setTimeout(() => {
-        setDisplay("hidden");
-      }, 3000);
-    } catch (error: any) {
-      console.error("Error: ", error.response || error.message);
-    }
+    setDisable(false);
+    setTimeout(() => {
+      setDisplay("hidden");
+    }, 3000);
   };
 
   const handleEmailUpdate = async () => {
@@ -120,55 +101,19 @@ export default function UpdateEmail() {
       setDisable(false);
     }
 
-    const authHeader = "Token " + sessionkey;
-
-    // Create FormData object to append form fields
-    const formData = new FormData();
-    formData.append("resetCode", resetCode);
-    formData.append("newEmail", newEmail);
-
-    try {
-      const response = await axios.patch(
-        `${apiUrl}/user/confirm-change-email`,
-        {
-          email_reset_code: resetCode,
-          new_email: newEmail,
-        },
-        {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "multipart/form-data", // Keep this as multipart/form-data
-          },
-        }
-      );
-
-      console.log("Email updated successfully!");
-      console.log(newEmail);
-      setUserDetails({
-        email: newEmail,
-      });
-      setDisable(true);
-      setDefaultView(false);
-      setSuccess(true);
-      setTimeout(() => {
-        location.reload()
-      }, 5000);
-    } catch (error: any) {
-      console.log("Error saving data:", error.response || error.message);
-      setDisplay("");
-      setMessage(
-        <div className="flex gap-2">
-          <ShieldX color="red" /> <p>{error.response.data.error}</p>
-        </div>
-      );
-      setMessageColor("text-red-500"); // Use valid Tailwind color class
-    } finally {
-      setLoading(false);
-      setTimeout(() => {
-        setDisplay("hidden");
-        setSuccess(false);
-      }, 5000);
-    }
+    console.log("Email updated successfully!");
+    console.log(newEmail);
+    setUserDetails({
+      email: newEmail,
+    });
+    setDisable(true);
+    setDefaultView(false);
+    setSuccess(true);
+    setTimeout(() => {
+      setDisplay("hidden");
+      setSuccess(false);
+      location.reload();
+    }, 2000);
   };
 
   return (

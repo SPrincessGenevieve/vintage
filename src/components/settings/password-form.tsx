@@ -15,101 +15,83 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 export default function PasswordForm() {
   const [loading, setLoading] = useState(false);
 
-  const { sessionkey, setUserDetails } = useUserContext();
+  const { password, setUserDetails } = useUserContext();
 
+  const [oldPassword, setOldPassword] = useState(password);
   const [currentPassword, setCurrentPassword] = useState("");
-  const [password, setPassword] = useState("");
+  const [newpassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [messageColor, setMessageColor] = useState("");
   const [display, setDisplay] = useState("");
-  const [success, setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false);
+
+  console.log("pass: ", password);
 
   const handleSave = async () => {
     console.log("Clicked");
     setLoading(true);
-    if (!password || !confirmPassword || !currentPassword) {
+  
+    if (!newpassword || !confirmPassword || !currentPassword) {
       setMessage("Please input your current password.");
       setMessageColor("text-[red]");
       setLoading(false);
-      setTimeout(() => {
-        setDisplay("hidden");
-      }, 3000);
-      return;
-    } else if (confirmPassword !== password) {
-      setMessage("Password do not match");
-      setMessageColor("text-[red]");
-      setLoading(false);
-      setTimeout(() => {
-        setDisplay("hidden");
-      }, 3000);
-      return;
-    } else if (!password) {
-      setMessage("Current password is required");
-      setMessageColor("text-[red]");
-      setLoading(false);
-      setTimeout(() => {
-        setDisplay("hidden");
-      }, 3000);
       return;
     }
+  
+    if (oldPassword !== currentPassword) {
+      setMessage("The current password you entered is incorrect. Please try again.");
+      setMessageColor("text-[red]");
+      setLoading(false);
+      return;
+    }
+  
+    if (confirmPassword !== newpassword) {
+      setMessage("Passwords do not match");
+      setMessageColor("text-[red]");
+      setLoading(false);
+      return;
+    }
+  
+    if (!newpassword) {
+      setMessage("New password is required");
+      setMessageColor("text-[red]");
+      setLoading(false);
+      return;
+    }
+  
+    // continue to update
     const updatedData = {
-      new_password1: password,
+      new_password1: newpassword,
       new_password2: confirmPassword,
       current_password: currentPassword,
     };
-
-    const formData = new FormData();
-    formData.append("new_password1", updatedData.new_password1);
-    formData.append("new_password2", updatedData.new_password2);
-    formData.append("current_password", updatedData.current_password);
-
-    // Optionally, send data to the backend here
-    const authHeader = "Token " + sessionkey;
-    try {
-      const response = await axios.post(
-        `${apiUrl}/auth/password/change/`,
-        {
-          new_password1: password,
-          new_password2: confirmPassword,
-          current_password: currentPassword,
-        },
-        {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "multipart/form-data", // Set content-type to multipart/form-data for file upload
-          },
-        }
-      );
-      console.log("Data updated successfully!");
-      setMessage("Password updated successfully!");
-      setMessageColor("text-[#00B050]");
-      if (response.status === 200) {
-        setSuccess(true)
-        setPassword("");
-        setCurrentPassword("");
-        setConfirmPassword("");
-        setTimeout(() => {
-          setDisplay("hidden");
-        }, 5000);
-      }
-    } catch (error: any) {
-      console.error("Error saving data:", error.response || error.message);
-      setMessage(error.response.data.detail);
-      setMessageColor("text-[red]");
-      console.log("Error: ", error.response.data.detail);
-      setTimeout(() => {
-        setDisplay("hidden");
-      }, 5000);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCancel = () => {
-    setPassword("");
+  
+    setUserDetails({
+      password: newpassword,
+    });
+  
+    setMessage("Password updated successfully!");
+    setMessageColor("text-[#00B050]");
+    setSuccess(true);
+  
+    // Clear form fields
+    setNewPassword("");
     setCurrentPassword("");
     setConfirmPassword("");
+  
+    setTimeout(() => {
+      setLoading(false);
+      setDisplay("hidden");
+    }, 2000);
+  };
+  
+
+  const handleCancel = () => {
+    setNewPassword("");
+    setCurrentPassword("");
+    setConfirmPassword("");
+    setDisplay("hidden")
   };
 
   return (
@@ -156,8 +138,8 @@ export default function PasswordForm() {
             type="password"
             placeholder="***************"
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={newpassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
         </div>
         <div className="flex flex-col gap-3">

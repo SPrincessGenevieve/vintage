@@ -19,48 +19,48 @@ import Loading from "../loading";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import DepositDialog from "../settings/deposit-dialog";
 import { UserData } from "@/lib/data/user";
+import { SubAccountData } from "@/lib/data/sub-accounts";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function DashboardHeader() {
   // State to track the selected item
   const [selectedUser, setSelectedUser] = useState("");
-  const { userData, profile_picture, sessionkey, setUserDetails } =
-    useUserContext();
+  const { profile_picture, sessionkey, setUserDetails } = useUserContext();
   const authHeader = "Token " + sessionkey;
   const [open, setOpen] = useState(false);
   const [sub_account_id, setSubAccountID] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [isInvestment, setIsInvestment] = useState(false);
 
-  const sub_accounts = UserData.sub_accounts;
+  const sub_accounts = SubAccountData;
 
   setUserDetails({
     user_now_id: sub_account_id,
   });
 
+  console.log(sub_account_id);
+
   useEffect(() => {
     if (!selectedUser) {
-      setSelectedUser(userData.first_name);
+      setSelectedUser(UserData.first_name);
     }
   }, [selectedUser]);
 
   const all_account = [
     {
       id: null,
-      first_name: userData.first_name,
-      last_name: userData.last_name,
+      first_name: UserData.first_name,
+      last_name: UserData.last_name,
       birth_date: "",
       created_at: "",
-      profile_picture: userData.profile_picture,
+      profile_picture: UserData.profile_picture,
       user: "",
     },
     ...sub_accounts,
   ];
 
-  const full_name = userData.first_name + " " + userData.last_name;
-
-  console.log("PROFILE PICTURE: ", profile_picture);
+  const full_name = UserData.first_name + " " + UserData.last_name;
 
   const profilePictureSrc =
     typeof profile_picture === "string"
@@ -74,24 +74,24 @@ export default function DashboardHeader() {
       return;
     }
     const fetchData = async () => {
-      if (selectedUser === userData.first_name || selectedUser === "") {
+      if (selectedUser === UserData.first_name || selectedUser === "") {
         setUserDetails({
-          first_name: userData.first_name,
-          last_name: userData.last_name,
-          portfolio_performance: userData.portfolio_performance,
-          current_market_value: userData.current_market_value,
-          assets_by_region: userData.assets_by_region,
-          case_due: userData.case_due,
-          profit_loss: userData.profit_loss,
-          total_case: userData.total_case,
-          investment: userData.investment,
+          first_name: UserData.first_name,
+          last_name: UserData.last_name,
+          portfolio_performance: UserData.portfolio_performance,
+          current_market_value: UserData.current_market_value,
+          assets_by_region: UserData.assets_by_region,
+          case_due: UserData.case_due,
+          profit_loss: UserData.profit_loss,
+          total_case: UserData.total_case,
+          investment: UserData.investment,
           dashboard_title: "Current Investment",
-          dashboard_value: userData.life_time_investment,
-          case_due_state: userData.case_due,
-          total_withdrawn_state: userData.total_withdrawn,
-          cases_sold_state: userData.cases_sold,
-          profit_loss_money_state: userData.profit_loss_money,
-          total_cases_state: userData.total_case,
+          dashboard_value: UserData.life_time_investment,
+          case_due_state: UserData.case_due,
+          total_withdrawn_state: UserData.total_withdrawn,
+          cases_sold_state: UserData.cases_sold,
+          profit_loss_money_state: UserData.profit_loss_money,
+          total_cases_state: UserData.total_case,
         });
         setSubAccountID(0);
       } else {
@@ -109,7 +109,6 @@ export default function DashboardHeader() {
   };
 
   const handleSetSubAccount = async (index: number) => {
-    console.log("CLICKED : ", index);
     setIsVisible(true);
     let fname = all_account[index].first_name;
     let lname = all_account[index].last_name;
@@ -118,67 +117,54 @@ export default function DashboardHeader() {
     let profile = all_account[index].profile_picture;
 
     try {
-      if (fname === userData.first_name || "") {
-        const response = await axios.get(`${apiUrl}/user/`, {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        });
-        const response_data = response.data;
+      if (fname === UserData.first_name || "") {
         setUserDetails({
-          first_name: userData.first_name,
-          last_name: userData.last_name,
-          portfolio_performance: userData.portfolio_performance,
-          current_market_value: userData.current_market_value,
-          assets_by_region: userData.assets_by_region,
-          case_due: userData.case_due,
-          profit_loss: userData.profit_loss,
-          total_case: userData.total_case,
-          investment: userData.investment,
+          first_name: UserData.first_name,
+          last_name: UserData.last_name,
+          portfolio_performance: UserData.portfolio_performance,
+          current_market_value: UserData.current_market_value,
+          assets_by_region: UserData.assets_by_region,
+          case_due: UserData.case_due,
+          profit_loss: UserData.profit_loss,
+          total_case: UserData.total_case,
+          investment: UserData.investment,
           dashboard_title: "Current Investment",
-          dashboard_value: userData.life_time_investment,
-          case_due_state: userData.case_due,
-          total_withdrawn_state: userData.total_withdrawn,
-          cases_sold_state: userData.cases_sold,
-          profit_loss_money_state: userData.profit_loss_money,
-          total_cases_state: userData.total_case,
-          profile_picture: userData.profile_picture,
+          dashboard_value: UserData.life_time_investment,
+          case_due_state: UserData.case_due,
+          total_withdrawn_state: UserData.total_withdrawn,
+          cases_sold_state: UserData.cases_sold,
+          profit_loss_money_state: UserData.profit_loss_money,
+          total_cases_state: UserData.total_case,
+          profile_picture: UserData.profile_picture,
         });
         setSubAccountID(0);
       } else {
-        const response = await axios.get(`${apiUrl}/user/${user}/${id}/`, {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        });
+        console.log("ASSETS: ", sub_accounts[index].assets_by_region);
         setSubAccountID(id);
         setUserDetails({
           first_name: fname,
           last_name: lname,
-          portfolio_performance: response.data.portfolio_performance,
-          current_market_value: response.data.current_market_value,
-          assets_by_region: response.data.assets_by_region,
-          case_due: response.data.case_due,
-          profit_loss: response.data.profit_loss,
-          total_case: response.data.total_case,
-          investment: response.data.investments,
+          portfolio_performance: sub_accounts[index].portfolio_performance,
+          current_market_value: sub_accounts[index].current_market_value,
+          assets_by_region: sub_accounts[index].assets_by_region,
+          case_due: sub_accounts[index].case_due,
+          profit_loss: sub_accounts[index].profit_loss,
+          total_case: sub_accounts[index].total_case,
+          investment: sub_accounts[index].investments,
           dashboard_title: "Total Investment",
-          dashboard_value: response.data.total_investments,
-          total_cases_state: response.data.total_case,
+          dashboard_value: sub_accounts[index].total_investments,
+          total_cases_state: sub_accounts[index].total_case,
           case_due_state: 0,
           total_withdrawn_state: "0",
           cases_sold_state: 0,
           profit_loss_money_state: 0,
-          sub_account_list: response.data,
           profile_picture: profile,
         });
       }
     } catch (error) {
       console.log("ERROR: ", error);
       setIsInvestment(true);
-      setSelectedUser(userData.first_name);
+      setSelectedUser(UserData.first_name);
     } finally {
       setIsVisible(false);
     }
@@ -281,7 +267,7 @@ export default function DashboardHeader() {
                           className="p-0 h-auto mr-2"
                           variant="ghost"
                           disabled={
-                            item.first_name === userData.first_name
+                            item.first_name === UserData.first_name
                               ? true
                               : false
                           }

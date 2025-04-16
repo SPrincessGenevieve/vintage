@@ -1,7 +1,7 @@
 export const UserData = {
   is_admin: false,
   is_superuser: true,
-  is_old_user: true,
+  is_old_user: false,
   old_fee: "1500.00",
   email: "sprincessgenevieve@gmail.com",
   created_at: "2025-01-06T03:50:37.669433Z",
@@ -18,7 +18,7 @@ export const UserData = {
   profit_loss: -30.35,
   first_name: "Princess",
   last_name: "Rochelle",
-  birth_date: null,
+  birth_date: "29/12/2000",
   street_address: "Somewhere Address",
   city: "Somewhere City",
   state: "Somewhere State",
@@ -37,26 +37,38 @@ export const UserData = {
       status: "pending",
       type: "Withdraw",
       identifier: "Plaid",
-      card_end: "-",
-      brand: "-",
+      card_end: "4242",
+      brand: "visa",
+    },
+    {
+      id: 83,
+      amount: 1000,
+      time_stamp: "2025-12-07T12:23:47.427912Z",
+      status: "pending",
+      type: "Deposit",
+      identifier: "Plaid",
+      card_end: "4242",
+      brand: "visa",
     },
   ],
   investment: [
     {
       wine_name: "Domaine de la Romanee-Conti - Assortment Case",
-      vintage: "-",
+      vintage: null,
       wine_images: [
         "https://vintage-associates-django-development.s3.amazonaws.com/media/assortment.png",
       ],
+
       wines_investment_value: -3333.33,
       held: "March 2025",
     },
     {
       wine_name: "Super Tuscan Bundle",
-      vintage: "-",
+      vintage: null,
       wine_images: [
         "https://vintage-associates-django-development.s3.amazonaws.com/media/special_bundles.png",
       ],
+
       wines_investment_value: -15280.85,
       held: "March 2025",
     },
@@ -66,6 +78,7 @@ export const UserData = {
       wine_images: [
         "https://vintage-associates-django-development.s3.amazonaws.com/media/wine8.webp",
       ],
+
       wines_investment_value: 0.0,
       held: "March 2025",
     },
@@ -75,6 +88,7 @@ export const UserData = {
       wine_images: [
         "https://vintage-associates-django-development.s3.amazonaws.com/media/Bollinger_-_wine4.png",
       ],
+
       wines_investment_value: 0.0,
       held: "March 2025",
     },
@@ -84,6 +98,7 @@ export const UserData = {
       wine_images: [
         "https://vintage-associates-django-development.s3.amazonaws.com/media/wine21.webp",
       ],
+
       wines_investment_value: -795.67,
       held: "March 2025",
     },
@@ -93,6 +108,7 @@ export const UserData = {
       wine_images: [
         "https://vintage-associates-django-development.s3.amazonaws.com/media/wine21.webp",
       ],
+
       wines_investment_value: 1104.0,
       held: "March 2025",
     },
@@ -109,19 +125,19 @@ export const UserData = {
   sub_accounts: [
     {
       id: 22,
-      first_name: "Sky",
-      last_name: "Children",
+      first_name: "Liam",
+      last_name: "Patterson",
       birth_date: "2024-10-31",
       profile_picture:
-        "https://vintage-associates-django-development.s3.amazonaws.com/media/cat_5mh2N4V.png",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgtmS_THpd3b4YgklDGLB5rg66788rRKk97sNee5YoiAwL4JoiPq_IHcgkIrr8CpgNdIY&usqp=CAU",
       created_at: "2025-02-28T02:38:35.596305Z",
       user: 13,
       relationship: "son",
     },
     {
       id: 1,
-      first_name: "Robbie",
-      last_name: "Rodriguezzz",
+      first_name: "Chloe",
+      last_name: "Ramirez",
       birth_date: "2018-05-22",
       profile_picture: null,
       created_at: "2025-02-21T23:38:33.716420Z",
@@ -130,22 +146,22 @@ export const UserData = {
     },
     {
       id: 35,
-      first_name: "Sample Profile",
-      last_name: "Sample Profile",
+      first_name: "Ethan",
+      last_name: "Sinclair",
       birth_date: "1996-03-12",
       profile_picture:
-        "https://vintage-associates-django-development.s3.amazonaws.com/media/pngtree-padlock-secure-icon-outline-vector-png-image_4757804.png",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-NWzQbWlTxc_jmOOx0WWky2LjmFKYjA4Wz266lDfTmXhij3DJhtY9gKT382Zh5REgjFc&usqp=CAU",
       created_at: "2025-03-28T10:05:11.743713Z",
       user: 13,
       relationship: "niece",
     },
     {
       id: 26,
-      first_name: "SubEntry#1",
-      last_name: "SubEntry#1",
+      first_name: "Zara",
+      last_name: "Bennett",
       birth_date: "2025-02-27",
       profile_picture:
-        "https://vintage-associates-django-development.s3.amazonaws.com/media/483759104_1726734011532442_1140478790008606905_n.png",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZwFTtXxzgyX3o7MUN-xJZiP3HDgVt5TcMNPSVnleX68jujL-m3drx-hnyvwQ7ocXDNSg&usqp=CAU",
       created_at: "2025-03-02T05:17:00.820582Z",
       user: 13,
       relationship: "nephew",

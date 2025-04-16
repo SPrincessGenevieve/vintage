@@ -23,6 +23,7 @@ import {
 import { useUserContext } from "@/app/context/UserContext";
 import SearchBar from "../search-bar";
 import ActivityFilter from "./activity-filter"; // Ensure that this component exists
+import { UserData } from "@/lib/data/user";
 
 type Filters = {
   action: {
@@ -40,10 +41,10 @@ type Filters = {
   search: string;
 };
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ActivityTable() {
-  const { first_name, last_name, request, sessionkey } = useUserContext(); // Assuming you're getting first_name and last_name from context
+  const { first_name, last_name, sessionkey } = useUserContext(); // Assuming you're getting first_name and last_name from context
+  const request = UserData.request
   const [requests, setRequests] = useState<any[]>([]); // All requests fetched from the server
   const [filteredRequests, setFilteredRequests] = useState<any[]>([]); // Filtered requests based on filters
   const [deliverMessage, setDeliverMessage] = useState("");

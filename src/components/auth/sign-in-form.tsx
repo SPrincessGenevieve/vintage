@@ -13,24 +13,35 @@ import Loading from "../loading";
 import MobileAppsLinks from "./mobile-apps-links";
 
 export default function SigninForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [defaultEmail, setDefaultEmail] = useState("");
+  const [defaultPassword, setDefaultPassword] = useState("");
+  const [emailData, setEmail] = useState("");
+  const [passwordData, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useRouter();
+  const { setUserDetails, isLoggedIn, password, email } = useUserContext();
 
-  const defaultEmail = "example@gmail.com";
-  const defaultPassword = "Password1234";
+  useEffect(() => {
+    if (password === "") {
+      setDefaultPassword("Password1234");
+    } else if (email === "") {
+      setDefaultEmail("example@gmail.com");
+    } else {
+      setDefaultEmail(email);
+      setDefaultPassword(password);
+    }
+  }, [isLoggedIn]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true); // Set loading to true when the request starts
     const data = {
-      email: email,
-      password: password,
+      email: emailData,
+      password: passwordData,
     };
 
-    if (email === defaultEmail && password === defaultPassword) {
+    if (emailData === defaultEmail && passwordData === defaultPassword) {
       setLoading(false);
       navigate.push(`/auth/sign-up-5`);
     } else {
@@ -58,6 +69,7 @@ export default function SigninForm() {
     }
   }, [navigate]);
 
+
   return (
     <>
       {/* Show the Loading screen when loading is true */}
@@ -80,7 +92,7 @@ export default function SigninForm() {
               id="email"
               name="email"
               type="email"
-              value={email}
+              value={emailData}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="john@gmail.com"
               required
@@ -95,7 +107,7 @@ export default function SigninForm() {
               id="password"
               name="password"
               type="password"
-              value={password}
+              value={passwordData}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="****************"
               className="text-[14px] h-10"

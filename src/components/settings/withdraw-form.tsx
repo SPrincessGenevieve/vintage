@@ -36,33 +36,12 @@ export default function WithdrawForm() {
       return;
     }
     setLoading(true);
-    try {
-      const response = await axios.post(
-        `${apiUrl}/user/request-withdrawal/`,
-        {
-          amount: amount,
-        },
-        {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setSuccessMessage(true);
-
-      console.log("RESULT: ", response.status);
-    } catch (error) {
-      console.log("ERROR: ", error);
-      setError(true);
-      setErrorMessage("You already have a pending withdrawal request.");
-    } finally {
+    setSuccessMessage(true);
+    setTimeout(() => {
       setLoading(false);
-      setTimeout(() => {
-        setError(false);
-        setSuccessMessage(false);
-      }, 3000);
-    }
+      setError(false);
+      setSuccessMessage(false);
+    }, 3000);
   };
 
   const handleCancel = async () => {

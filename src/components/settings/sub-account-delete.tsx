@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import SpinnerIcon from "@/images/Spinner";
 import { useUserContext } from "@/app/context/UserContext";
 import axios from "axios";
+import { SubAccountData } from "@/lib/data/sub-accounts";
 
 interface SubAccountType {
   open: boolean;
@@ -25,35 +26,37 @@ export default function SubAccountDelete({
   setOpen,
   sub_account_index,
 }: SubAccountType) {
-  const { sessionkey, sub_accounts } = useUserContext();
+  const { sessionkey } = useUserContext();
+  const sub_accounts = SubAccountData;
   const authHeader = "Token " + sessionkey; // Basic Authentication header
   const [loading, setLoading] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const sub_id = sub_accounts[sub_account_index].id;
   console.log("SUBACCOUNT ID: ", sub_id);
 
   const handleDeleteSubAccount = async () => {
     setLoading(true);
-    try {
-      const response = await axios.delete(
-        `${apiUrl}/user/sub-accounts/${sub_id}`,
-        {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      location.reload();
-    } catch (error) {
-      console.log("ERROR: ", error);
-    } finally {
-      setLoading(false);
-    }
+
+    setTimeout(() => {
+      setLoading(false)
+      setDeleteDialog(true);
+    }, 500);
+    setTimeout(() => {
+      setDeleteDialog(false);
+      setOpen(false)
+    }, 1500);
   };
 
   return (
     <div>
+      <Dialog open={deleteDialog} onOpenChange={setDeleteDialog}>
+        <DialogContent>
+          <DialogTitle>Success</DialogTitle>
+          <p>Sub-account deleted successfully.</p>
+        </DialogContent>
+      </Dialog>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogTitle>Delete Sub-account</DialogTitle>

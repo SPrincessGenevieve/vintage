@@ -41,7 +41,7 @@ export default function TierThree() {
 
   return (
     <>
-      <div className="w-full h-[95%] bg-[white] rounded-xl flex flex-col">
+      <div className="w-full h-[100%] bg-[white] rounded-xl flex flex-col">
         {/* Header Section */}
         <div className="p-2 py-4 w-full flex justify-between ">
           <div className="flex gap-2 items-center">

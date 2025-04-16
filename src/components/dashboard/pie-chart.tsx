@@ -15,7 +15,7 @@ import { UserData } from "@/lib/data/user";
 const chartConfig = {} satisfies ChartConfig;
 
 export default function PieCharts() {
-  const assets_by_region = UserData.assets_by_region
+  const {assets_by_region} = useUserContext()
   const [innerRadius, setInnerRadius] = useState(65);
 
   useEffect(() => {

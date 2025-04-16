@@ -43,6 +43,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import UserData from "@/lib/json/general.json"
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -66,25 +67,18 @@ export default function GeneralForm() {
     sessionkey,
     setUserDetails,
   } = useUserContext();
-
-  console.log(country);
-  console.log(state);
-  console.log(city);
-  console.log(street_address);
-  console.log(postal_code);
-
   const [uploadedImage, setUploadedImage] = useState<string | null | File>(
-    profile_picture
+    UserData.profile_picture || profile_picture
   );
   const [loading, setLoading] = useState(false);
   const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [countryData, setCountryData] = useState("");
   const [stateData, setStateData] = useState("");
   const [cityData, setCityData] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [postalData, setPostalData] = useState("");
-  const [lastname, setLastname] = useState("");
   const [emailUser, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [display, setDisplay] = useState("");
@@ -110,7 +104,9 @@ export default function GeneralForm() {
     setBudgetUser(budget);
     setDuration(investment_time);
     setInvestor(invested_before ? "Yes" : "No");
-  }, [sessionkey]);
+
+    
+  }, []);
 
   // Store the original data
   const [originalData, setOriginalData] = useState({
@@ -142,100 +138,79 @@ export default function GeneralForm() {
 
   const handleSave = async () => {
     // Create an object of the updated fields, only including the changed fields
-    const updatedData: any = {};
 
     setLoading(true);
 
     // Check if each field has changed before adding it to the updatedData
     if (firstname !== originalData.firstname)
-      updatedData.first_name = firstname;
+      setUserDetails({
+        first_name: firstname,
+      });
+    if (lastname !== originalData.lastname)
+      setUserDetails({
+        last_name: lastname,
+      });
 
-    if (lastname !== originalData.lastname) updatedData.last_name = lastname;
-
-    if (phone !== originalData.phone) updatedData.phone_number = phone;
+    if (phone !== originalData.phone)
+      setUserDetails({
+        phone_number: phone,
+      });
 
     if (budgetUser !== originalData.budgetUser)
-      updatedData.budget = Number(budgetUser);
+      setUserDetails({
+        budget: Number(budgetUser),
+      });
 
     if (duration !== originalData.duration)
-      updatedData.investment_time = duration;
+      setUserDetails({
+        investment_time: duration,
+      });
 
     if (investor !== originalData.investor)
-      updatedData.invested_before = investor === "Yes";
+      setUserDetails({
+        invested_before: investor === "Yes" ? true : false,
+      });
 
     if (birthDate !== originalData.birthDate)
-      updatedData.birth_date = birthDate;
+      setUserDetails({
+        birth_date: birthDate,
+      });
 
     if (streetAddress !== originalData.streetAddress)
-      updatedData.street_address = streetAddress;
+      setUserDetails({
+        street_address: streetAddress,
+      });
 
-    if (cityData !== originalData.cityData) updatedData.city = cityData;
+    if (cityData !== originalData.cityData)
+      setUserDetails({
+        city: cityData,
+      });
 
-    if (stateData !== originalData.stateData) updatedData.state = stateData;
+    if (stateData !== originalData.stateData)
+      setUserDetails({
+        state: stateData,
+      });
 
     if (postalData !== originalData.postalData)
-      updatedData.postal_code = postalData;
+      setUserDetails({
+        postal_code: postalData,
+      });
 
     if (countryData !== originalData.countryData)
-      updatedData.country = countryData;
-    // Prepare FormData for sending to the backend
-    const formData = new FormData();
-
-    // Append updated fields to FormData
-    Object.entries(updatedData).forEach(([key, value]) => {
-      if (
-        typeof value === "string" ||
-        typeof value === "number" ||
-        typeof value === "boolean"
-      ) {
-        formData.append(key, value.toString());
-      }
-    });
-
-    // Only append the image if a new image has been uploaded
-    if (
-      uploadedImage &&
-      imageInputRef.current?.files &&
-      imageInputRef.current.files[0]
-    ) {
-      formData.append("profile_picture", imageInputRef.current.files[0]);
-    }
-
-    // Optionally, update local user details in the context/state
-    setUserDetails(updatedData);
-
-    console.log("UPDATED DATA: ", updatedData);
-
-    // Set the authorization header
-    const authHeader = "Token " + sessionkey;
-
-    try {
-      // Make the API request to patch only the changed fields
-      const response = await axios.patch(`${apiUrl}/user/`, formData, {
-        headers: {
-          Authorization: authHeader,
-          "Content-Type": "multipart/form-data", // Required for file uploads
-        },
+      setUserDetails({
+        country: countryData,
       });
-      console.log("Response: ", response);
 
-      console.log("Data updated successfully!");
-      setMessage("Data updated successfully!");
-      setSucces(true);
-      setColor("text-[#00B050]");
-    } catch (error: any) {
-      console.error("Error saving data:", error.response || error.message);
-      setMessage(`Error saving data: ${error.response || error.message}`);
-      setColor("text-[red]");
-    } finally {
-      setLoading(false);
-    }
-
+    console.log("Data updated successfully!");
+    setMessage("Data updated successfully!");
+    setSucces(true);
+    setColor("text-[#00B050]");
     // Hide the success/error message after 3 seconds
     setTimeout(() => {
+      setLoading(false);
       setDisplay("hidden");
       setSucces(false);
-    }, 3000);
+    }, 1000);
   };
 
   // Cancel function
@@ -253,7 +228,7 @@ export default function GeneralForm() {
     setPostalData(originalData.postalData);
     setBudgetUser(originalData.budgetUser);
     setDuration(originalData.duration);
-    setInvestor(invested_before ? "Yes" : "No");
+    setInvestor(originalData.investor ? "Yes" : "No");
     setUploadedImage(originalData.uploadedImage);
   };
 
@@ -333,7 +308,7 @@ export default function GeneralForm() {
             id="first_name"
             name="first_name"
             type="text"
-            value={firstname}
+            value={firstname || UserData.first_name}
             onChange={(e) => setFirstname(e.target.value)}
             required
           />
@@ -350,7 +325,7 @@ export default function GeneralForm() {
             id="last_name"
             name="last_name"
             type="text"
-            value={lastname}
+            value={lastname || UserData.last_name}
             onChange={(e) => setLastname(e.target.value)}
             required
           />
@@ -369,7 +344,7 @@ export default function GeneralForm() {
             id="birth_date"
             name="birth_date"
             type="date"
-            value={birthDate}
+            value={birthDate || UserData.birth_date}
             onChange={(e) => setBirthDate(e.target.value)}
             required
           />
@@ -487,7 +462,7 @@ export default function GeneralForm() {
             id="state"
             name="state"
             type="text"
-            value={stateData}
+            value={stateData || UserData.state}
             onChange={(e) => setStateData(e.target.value)}
             required
           />
@@ -501,7 +476,7 @@ export default function GeneralForm() {
             id="city"
             name="city"
             type="text"
-            value={cityData}
+            value={cityData || UserData.city}
             onChange={(e) => setCityData(e.target.value)}
             required
           />
@@ -520,7 +495,7 @@ export default function GeneralForm() {
             id="street"
             name="street"
             type="text"
-            value={streetAddress}
+            value={streetAddress || UserData.street_address}
             onChange={(e) => setStreetAddress(e.target.value)}
             required
           />
@@ -537,7 +512,7 @@ export default function GeneralForm() {
             id="postal"
             name="postal"
             type="text"
-            value={postalData}
+            value={postalData || UserData.postal_code}
             onChange={(e) => setPostalData(e.target.value)}
             required
           />
@@ -553,7 +528,7 @@ export default function GeneralForm() {
             id="email"
             name="email"
             type="email"
-            value={emailUser}
+            value={emailUser || UserData.email}
             onChange={(e) => setEmail(e.target.value)}
             disabled
           />
@@ -571,7 +546,7 @@ export default function GeneralForm() {
             id="phone_number"
             name="phone_number"
             type="text"
-            value={phone}
+            value={phone || UserData.phone_number}
             onChange={(e) => setPhone(e.target.value)}
           />
         </div>
@@ -587,7 +562,7 @@ export default function GeneralForm() {
             id="budget"
             name="budget"
             type="number"
-            value={budgetUser !== null ? String(budgetUser) : ""}
+            value={String(budgetUser) || UserData.budget }
             onChange={handleBudgetChange}
             required
           />
@@ -601,11 +576,11 @@ export default function GeneralForm() {
           </Label>
           <Select
             name="investment_time"
-            value={duration}
+            value={duration || UserData.investment_time}
             onValueChange={setDuration}
           >
             <SelectTrigger className="text-left py-5 px-4 text-sm gen-text-sm">
-              <SelectValue className="text-left" placeholder={duration} />
+              <SelectValue className="text-left" placeholder={duration || UserData.investment_time} />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

@@ -13,6 +13,8 @@ import DefaultUser from "@/images/user-placeholder.jpg";
 import { Select } from "@radix-ui/react-select";
 import { SelectContent, SelectItem, SelectTrigger } from "../ui/select";
 import { RelationshipSelect } from "@/lib/utils";
+import { Dialog } from "@radix-ui/react-dialog";
+import { DialogContent, DialogTitle } from "../ui/dialog";
 
 const apiURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -26,6 +28,7 @@ export default function SubAccountForm() {
   const [uploadedImage, setUploadedImage] = useState<string | null | File>();
   const authHeader = "Token " + sessionkey;
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false)
 
   const imageSrc =
     uploadedImage instanceof File
@@ -42,52 +45,14 @@ export default function SubAccountForm() {
 
   const handleNewSubAccount = async () => {
     setLoading(true);
-    const updatedData: any = {};
-    if (firstName !== originalData.firstName)
-      updatedData.first_name = firstName;
-    if (lastName !== originalData.lastName) updatedData.last_name = lastName;
-    if (birthdate !== originalData.birthdate)
-      updatedData.birth_date = birthdate;
-    if (relationship !== originalData.relationship)
-      updatedData.relationship = relationship;
-    const formData = new FormData();
-
-    // Append updated fields to FormData
-    Object.entries(updatedData).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-
-    // Only append the image if a new image has been uploaded
-    if (imageInputRef.current?.files?.length) {
-      formData.append("profile_picture", imageInputRef.current.files[0]);
-    }
-
-    try {
-      const response = await axios.post(
-        `${apiURL}/user/sub-accounts/`,
-        formData,
-        {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": undefined,
-          },
-        }
-      );
-
-      if (response.status === 200 || response.status === 201) {
-        setUserDetails({
-          sub_accounts: response.data,
-          first_name: userData.first_name,
-          last_name: userData.last_name,
-          selectedAccountIndex: null,
-        });
-        location.reload();
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-    } finally {
-      setLoading(false);
-    }
+  
+    setTimeout(() =>{
+      setLoading(false)
+      setOpen(true)
+      setTimeout(() =>{
+        location.reload()
+      }, 1000)
+    }, 1000)
   };
 
   console.log("RELATIONSHIP: ", relationship);
@@ -110,6 +75,12 @@ export default function SubAccountForm() {
 
   return (
     <div className="flex flex-col gap-8">
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogTitle>Success</DialogTitle>
+          <p>Created sub-account successfully.</p>
+        </DialogContent>
+      </Dialog>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-[70px] h-[70px] rounded-full overflow-hidden">
