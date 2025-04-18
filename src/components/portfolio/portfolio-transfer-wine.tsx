@@ -17,12 +17,13 @@ import Image from "next/image";
 import { Label } from "../ui/label";
 import { ChevronDown } from "lucide-react";
 import { Button } from "../ui/button";
+import { InvestmentType } from "@/lib/types";
+import { SubAccountData } from "@/lib/data/sub-accounts";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface PortfolioSellDialogProps {
-  item: InvestmentListType;
-  parent: WineParentType;
+  item: InvestmentType;
   isDisabled: boolean;
   closeDialog: () => void;
   investment_id: number;
@@ -30,7 +31,6 @@ interface PortfolioSellDialogProps {
 
 export default function PortfolioTransferWine({
   item,
-  parent,
   isDisabled,
   closeDialog,
   investment_id,
@@ -40,12 +40,13 @@ export default function PortfolioTransferWine({
     email,
     password1,
     sessionkey,
-    sub_accounts,
     quantity_to_transfer,
     setUserDetails,
   } = useUserContext();
 
   const authHeader = "Token " + sessionkey; // Basic Authentication header
+
+  const sub_accounts = SubAccountData;
   const [caseSize, setCaseSize] = useState("1x75");
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedAccount, setSelectedAccount] = useState<number>();
@@ -59,20 +60,6 @@ export default function PortfolioTransferWine({
 
   const fetchSubAccountData = async () => {
     console.log("CLICKED");
-    try {
-      const response = await axios.get(`${apiUrl}/user/sub-accounts/`, {
-        headers: {
-          Authorization: authHeader,
-          "Content-Type": "application/json",
-        },
-      });
-      const sub_user_data = response.data;
-      setUserDetails({
-        sub_accounts: sub_user_data,
-      });
-    } catch (error) {
-      console.log("ERROR: ", error);
-    }
   };
 
   const all_account = [
@@ -87,8 +74,6 @@ export default function PortfolioTransferWine({
     ...sub_accounts,
   ];
 
-  console.log("Selected Account: ", selectedAccount);
-
   const sub_account_active = all_account[selectedAccount || 0]
     ? all_account[selectedAccount || 0].first_name +
       " " +
@@ -96,30 +81,6 @@ export default function PortfolioTransferWine({
     : "No sub-account selected";
 
   let sub_account_list = all_account.length;
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(`${apiUrl}/user/sub-accounts/`, {
-  //         headers: {
-  //           Authorization: authHeader,
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-
-  //       const data = response.data;
-  //       setCount(Array.isArray(data) ? data.length : 0);
-  //       setUserDetails({
-  //         all_account: response.data,
-  //       });
-  //     } catch (error) {
-  //       console.log("ERROR: ", error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [sessionkey, all_account]);
-
-  console.log("SELECTED ACCOUNT: ", selectedAccount);
 
   useState(() => {
     if (sub_account_list === 0) {
@@ -133,37 +94,16 @@ export default function PortfolioTransferWine({
     console.log("Investment ID: ", investment_id);
     const sub_account_id = selectedAccount !== 0 ? all_account[index].id : 0;
     setLoading(true);
-
-    const data = {
-      sub_account_id: sub_account_id,
-    };
-    try {
-      const response = await axios.put(
-        `${apiUrl}/api/wine/investment/${investment_id}/?action=add_sub_account`,
-        data,
-        {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.status === 200 || response.status === 201) {
-        setOpen(true);
-        setSuccessMessage("Wine transfered successfully");
-        setSuccessSubMessage(`was transfered to ${sub_account_active}`);
-        setTimeout(() => {
-          location.reload();
-        }, 2000);
-      }
-    } catch (error) {
-      console.log("Something went wrong");
-    } finally {
+    setTimeout(() => {
+      setOpen(true);
       setLoading(false);
-    }
+      setSuccessMessage("Wine transfered successfully");
+      setSuccessSubMessage(`was transfered to ${sub_account_active}`);
+      setTimeout(() => {
+        location.reload();
+      }, 2000);
+    }, 1000);
   };
-
-  console.log("CURRENT OWNER: ", sub_account_owner);
 
   const bottleSize = item.bottle_size;
 
@@ -178,17 +118,25 @@ export default function PortfolioTransferWine({
                   <Image
                     width={300}
                     height={300}
-                    src={item.wine_image}
+                    src={
+                      item.wine_parent
+                        ? item.wine_parent.images[0]
+                        : item.basket_details?.image || "fallback.png"
+                    }
                     alt="card"
                     className="z-20 w-auto max-h-[150px]"
                   />
                 </div>
               </div>
               <div className="flex flex-col">
-                <p className="text-[12px] font-semibold">{item.wine_name}</p>
+                <p className="text-[12px] font-semibold">
+                  {item.wine_vintage_details
+                    ? item.wine_vintage_details.name
+                    : item.basket_details?.name}
+                </p>
                 <div className="text-gray-400 flex justify-between">
                   <p className="text-[10px] font-light">Vintage</p>
-                  <p className="text-[10px] font-light">{item.vintage}</p>
+                  <p className="text-[10px] font-light">{item.wine_vintage}</p>
                 </div>
                 <div className="text-gray-400 flex justify-between">
                   <p className="text-[10px] font-light">Quantity</p>
@@ -212,7 +160,10 @@ export default function PortfolioTransferWine({
           </div>
           <p className="font-light py-2">{successMessage}</p>
           <Label className="font-light">
-            {item.wine_name} {successSubMessage}
+            {item.wine_vintage_details
+              ? item.wine_vintage_details.name
+              : item.basket_details?.name}{" "}
+            {successSubMessage}
           </Label>
         </div>
       ) : (
@@ -225,17 +176,27 @@ export default function PortfolioTransferWine({
                     <Image
                       width={300}
                       height={300}
-                      src={item.wine_image}
+                      src={
+                        item.wine_parent
+                          ? item.wine_parent.images[0]
+                          : item.basket_details?.image || "fallback.png"
+                      }
                       alt="card"
                       className="z-20 w-auto max-h-[150px]"
                     />
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-[12px] font-semibold">{item.wine_name}</p>
+                  <p className="text-[12px] font-semibold">
+                    {item.wine_vintage_details
+                      ? item.wine_vintage_details.name
+                      : item.basket_details?.name}
+                  </p>
                   <div className="text-gray-400 flex justify-between">
                     <p className="text-[10px] font-light">Vintage</p>
-                    <p className="text-[10px] font-light">{item.vintage}</p>
+                    <p className="text-[10px] font-light">
+                      {item.wine_vintage}
+                    </p>
                   </div>
                   <div className="text-gray-400 flex justify-between">
                     <p className="text-[10px] font-light">Quantity</p>
@@ -272,7 +233,7 @@ export default function PortfolioTransferWine({
               <Menubar className="w-full p-0 mt-5">
                 <MenubarMenu>
                   <MenubarTrigger
-                  onClick={fetchSubAccountData}
+                    onClick={fetchSubAccountData}
                     className="w-full p-0 flex flex-col gap-2 bg-white"
                     disabled={sub_account_list === 0}
                   >

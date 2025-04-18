@@ -8,7 +8,7 @@ import {
   MapPinned,
   AlertCircleIcon,
 } from "lucide-react";
-import type { WineCardT } from "@/lib/types";
+import type { InvestmentType, WineCardT } from "@/lib/types";
 import { useState, useEffect } from "react";
 import SellDialog from "./sell-to-cart-dialog";
 import BuyDialog from "./buy-now-dialog";
@@ -34,11 +34,7 @@ import {
   WineParentType,
 } from "@/app/context/UserContext";
 import Image from "next/image";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { Select, SelectTrigger, SelectValue } from "../ui/select";
 import {
   HoverCard,
   HoverCardContent,
@@ -55,15 +51,12 @@ interface Visibility {
 
 export default function PortfolioWineCard({
   item,
-  parent,
-  vintage,
   year,
 }: {
-  item: PortfolioType;
-  parent: WineParentType;
-  vintage: VintageWineType;
+  item: InvestmentType;
   year: number | null;
 }) {
+  console.log("ITEM LIST DETAIL: ", item);
   const [number_of_cases, setCases] = useState<number>(1);
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -78,14 +71,16 @@ export default function PortfolioWineCard({
   const [isHiddenGrapes, setIsHiddenGrapes] = useState("");
   const [isHiddenMaturation, setIsHiddenMaturation] = useState("");
   const [isHiddenAlcohol, setIsHiddenAlcohol] = useState("");
-  const cases_list = vintage.available_case_size.map((item) => item);
+  const vintage = item?.wine_vintage_details;
+  const parent = item?.wine_parent;
+  const cases_list = vintage?.available_case_size.map((item) => item);
 
   const bottle_size =
-    vintage.bottle_size === "0750"
+    vintage?.bottle_size === "0750"
       ? "75cl"
-      : vintage.bottle_size === "1500"
+      : vintage?.bottle_size === "1500"
       ? "150cl"
-      : vintage.bottle_size === "3000"
+      : vintage?.bottle_size === "3000"
       ? "300cl"
       : "";
 
@@ -136,17 +131,15 @@ export default function PortfolioWineCard({
     };
 
     const hide = () => {
-      setIsHiddenOwnership(item.wine_parent.ownership === "NA" ? "hidden" : "");
-      setIsHiddenFrom(item.wine_parent.fromm === "NA" ? "hidden" : "");
-      setIsHiddenBlend(item.wine_parent.blend === "NA" ? "hidden" : "");
-      setIsHiddenAlcohol(
-        item.wine_parent.alcohol_abv === "0.00%" ? "hidden" : ""
-      );
-      setIsHiddenGrapes(item.wine_parent.grapes === "NA" ? "hidden" : "");
+      setIsHiddenOwnership(parent?.ownership === "NA" ? "hidden" : "");
+      setIsHiddenFrom(parent?.fromm === "NA" ? "hidden" : "");
+      setIsHiddenBlend(parent?.blend === "NA" ? "hidden" : "");
+      setIsHiddenAlcohol(parent?.alcohol_abv === "0.00%" ? "hidden" : "");
+      setIsHiddenGrapes(parent?.grapes === "NA" ? "hidden" : "");
       setIsHiddenMaturation(
-        !item.wine_parent.maturation ||
-          item.wine_parent.maturation === "NA" ||
-          item.wine_parent.maturation.trim() === ""
+        !parent?.maturation ||
+          parent?.maturation === "NA" ||
+          parent?.maturation.trim() === ""
           ? "hidden"
           : ""
       );
@@ -163,12 +156,11 @@ export default function PortfolioWineCard({
           <PortfolioGiftSingleDialog
             closeDialog={() => setDialogOpen(false)}
             isDisabled={false}
-            parent={parent}
             item={item}
           />
         );
       case "Delivery Request":
-        return <PortfolioRequestSingleDialog parent={parent} item={item} />;
+        return <PortfolioRequestSingleDialog item={item} />;
       default:
         return null;
     }
@@ -211,24 +203,16 @@ export default function PortfolioWineCard({
     }
   };
 
-  const marketPriceVal = Number(item.wine_vintage_details.market_value);
+  const marketPriceVal = Number(vintage?.market_value);
   const quantity = item.quantity;
   const is_special_volumes = item.is_special_volumes;
-  const is_user_investment = item.wine_vintage_details.is_user_investment;
-  const bottleSize = item.wine_vintage_details.bottle_size;
+  const is_user_investment = vintage?.is_user_investment;
+  const bottleSize = vintage?.bottle_size;
   const case_size = Number(item.case_size);
-  const processed_case = Number(item.wine_vintage_details.processed_case);
+  const processed_case = Number(vintage?.processed_case);
   const bottleSizeVal =
     bottleSize === "1500" ? 2 : bottleSize === "3000" ? 4 : 8;
 
-  console.log("MARKET PRICE: ", marketPriceVal);
-  console.log("QUANTITY: ", quantity);
-  console.log("IS SPECIAL VOLUME: ", is_special_volumes);
-  console.log("IS USER INVESTMENT: ", is_user_investment);
-  console.log("BOTTLE SIZE: ", bottleSize);
-  console.log("BOTTLE SIZE: ", bottleSizeVal);
-  console.log("CASE SIZE: ", case_size);
-  console.log("PROCESSED CASE: ", processed_case);
 
   console.log(
     "MARKET VALUEEEE: ",
@@ -263,7 +247,7 @@ export default function PortfolioWineCard({
               <Image
                 width={400}
                 height={400}
-                src={parent.images?.[0] || "/fallback-image.jpg"}
+                src={parent?.images?.[0] || "/fallback-image.jpg"}
                 alt="card"
                 className="w-auto h-full max-h-[300px]"
               />
@@ -319,28 +303,9 @@ export default function PortfolioWineCard({
               {displayValue(parent?.winery) || "None"} <br />
               <br />{" "}
               <span className="text-[12px] italic">
-                Tasting Note: {displayValueNote(vintage.rp_tasting_notes)}
+                Tasting Note: {displayValueNote(vintage?.rp_tasting_notes)}
               </span>
             </p>
-            {/* <span className="text-muted-foreground text-[14px]  cursor-pointer">
-                  {isTruncated ? (
-                    <>
-                      {truncatedWinery}
-                      {parent?.winery?.length > 100 && (
-                        <span
-                          className="text-blue-500 cursor-pointer ml-1"
-                          onClick={handleReadMoreClick}
-                        >
-                          [read more...]
-                        </span>
-                      )}
-                    </>
-                  ) : (
-                    parent?.winery || "Unknown Winery"
-                  )}
-                </span> */}
-
-            {/* Dialog Content */}
           </div>
 
           <div className="mt-4 flex gap-2">
@@ -389,13 +354,13 @@ export default function PortfolioWineCard({
                   <CaseSize
                     bottle_size={bottle_size}
                     case_size_title={
-                      vintage.bottle_size === "1500"
+                      vintage?.bottle_size === "1500"
                         ? "150"
-                        : vintage.bottle_size === "0750"
+                        : vintage?.bottle_size === "0750"
                         ? "75"
-                        : vintage.bottle_size === "3000"
+                        : vintage?.bottle_size === "3000"
                         ? "300"
-                        : vintage.bottle_size === "6000"
+                        : vintage?.bottle_size === "6000"
                         ? "600"
                         : "150"
                     }
@@ -507,12 +472,10 @@ export default function PortfolioWineCard({
                     </Dialog>
                   </DropdownMenu>
                 </div>
-                <BuyDialog parent={parent} item={item} />
+                <BuyDialog item={item} />
                 <SellDialog
                   quantity={number_of_cases}
-                  lwin11={vintage.lwin11}
                   market_value={formattedMarketValue || "0"}
-                  price={item.market_value || 0}
                   item={item}
                 />
               </div>

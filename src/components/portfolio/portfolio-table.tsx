@@ -4,113 +4,19 @@ import { TableData } from "../table-data";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { ArrowDownUp, ArrowUpDown, EllipsisVertical } from "lucide-react";
-import PortfolioManage from "./portfolio-manage";
 import Link from "next/link";
-import {
-  PortfolioType,
-  useUserContext,
-  VintageWineType,
-  WineParentType,
-} from "@/app/context/UserContext";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { InvestmentListType } from "@/app/context/UserContext";
-import axios from "axios";
+import { investment } from "@/lib/data/investment";
+import { InvestmentType } from "@/lib/types";
+import PortfolioManage from "./portfolio-manage";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-export default function PortfolioTable({
-  portfolio,
-  parent,
-}: {
-  portfolio: PortfolioType[];
-  parent: WineParentType;
-}) {
-  const { setUserDetails, sessionkey, user_now_id, gain_loss_filter } =
-    useUserContext();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isGiftDisabled, setIsGiftDisabled] = useState(false);
-  const [isSellDisabled, setIsSellDisabled] = useState(false);
-  const [isDeliveryDisabled, setIsDeliveryDisabled] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(true);
+export default function PortfolioTable() {
   const [isFiltered, setIsFiltered] = useState(false);
-  const [investment_list, setInvestmentList] = useState<InvestmentListType[]>(
-    []
-  );
-  const [portfolio_link, setPortfolioLink] = useState("");
-  const authHeader = "Token " + sessionkey;
 
-  useEffect(() => {
-    const updatedInvestmentList = portfolio.map((item) => ({
-      id: item.id,
-      wine_name:
-        item.basket_details === null
-          ? item.wine_parent?.name ?? ""
-          : item.basket_details.name,
-      bottle_size:
-        item.basket_details === null
-          ? item.wine_vintage_details?.bottle_size
-          : "",
-      investment: item.investment,
-      wine_vintage: item.wine_vintage,
-      quantity: item.quantity,
-      case_size: item.case_size,
-      market_value: item.market_value,
-      profit_lost: item.profit_lost,
-      profit_lost_by_percent: item.profit_lost_by_percent,
-      investment_status: item.investment_status,
-      quantity_to_sell: item.quantity_to_sell,
-      quantity_to_transfer: item.quantity_to_transfer,
-      sub_account: item.sub_account,
-      wine_image:
-        item.basket_details === null
-          ? item.wine_parent.images[0]
-          : item.basket_details.image,
-      vintage:
-        item.basket_details === null
-          ? item.wine_vintage_details?.vintage ?? 0 // Ensure vintage is a number
-          : item.wine_vintage_details?.vintage ?? 0, // Default to 0 if null or undefined
-      wine_vintage_details: item.wine_vintage_details,
-      wine_parent: item.wine_parent,
-      basket_details: item.basket_details,
-      basket_items: item.basket_items,
-    }));
-    const portfolioLink = portfolio.map((item) => {
-      item.basket_details;
-    });
-    setInvestmentList(updatedInvestmentList);
-  }, [portfolio]);
+  const handleFilter = () => {};
 
-  const handleFilter = () => {
-    setIsFiltered(!isFiltered);
-    setUserDetails({
-      gain_loss_filter: isFiltered,
-    });
-  };
+  const handleFilter2 = () => {};
 
-  const handleFilter2 = () => {
-    setIsFiltered(!isFiltered);
-    setUserDetails({
-      gain_loss_filter: isFiltered,
-    });
-  };
-
-  const filteredData = Array.isArray(portfolio)
-    ? portfolio.filter((portfolioItem) => {
-        const search = searchTerm.toLowerCase();
-        const matchesName = portfolioItem.wine_vintage_details?.name
-          .toLowerCase()
-          .includes(search);
-        const matchesVintage = portfolioItem.wine_vintage_details?.vintage
-          .toString()
-          .toLowerCase()
-          .includes(search);
-        return matchesName || matchesVintage;
-      })
-    : []; // If not an array, return an empty array
-
-
-
-  const columns: ColumnDef<InvestmentListType, unknown>[] = [
+  const columns: ColumnDef<InvestmentType, unknown>[] = [
     {
       accessorKey: "wine_image",
       header: () => (
@@ -119,19 +25,22 @@ export default function PortfolioTable({
         </div>
       ),
       cell: ({ row }) => {
-        const image = row.original.wine_image;
+        const wine_parent = row.original.wine_parent;
+        const basket_parent = row.original.basket_details?.image;
+        const image = wine_parent ? wine_parent.images[0] : basket_parent;
         const basket_list = row.original.basket_details;
+        const index_num = row.index
         return (
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
                 : `/dashboard/portfolio/bundle/${row.original.id}`
             }
           >
             <div className="flex justify-center">
               <Image
-                src={image}
+                src={image ?? "/default-image.png"}
                 width={300}
                 height={300}
                 alt={`${image}`}
@@ -204,7 +113,7 @@ export default function PortfolioTable({
       ),
       cell: ({ getValue, row }) => {
         const basket_list = row.original.basket_details;
-        const vintage = row.original.vintage;
+        const vintage = row.original.wine_vintage;
         return (
           <Link
             href={
@@ -468,13 +377,13 @@ export default function PortfolioTable({
       cell: ({ row }) => {
         const basket_list = row.original.basket_details;
         const investment_id = row.original.id || 0;
+        const parent = row.original.wine_parent;
         return (
           <button className="flex items-center justify-center w-full">
             <div className="flex justify-center">
               <PortfolioManage
                 investment_id={investment_id}
                 item={row.original}
-                parent={parent}
                 triggerContent={
                   <div>
                     <Button variant="ghost">
@@ -494,7 +403,7 @@ export default function PortfolioTable({
 
   return (
     <div className="flex flex-col w-full h-[full]">
-      <TableData pageSize={pageSize} columns={columns} data={investment_list} />
+      <TableData pageSize={pageSize} columns={columns} data={investment} />
     </div>
   );
 }

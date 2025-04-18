@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { WineCardT } from "@/lib/types";
+import { InvestmentType, WineCardT } from "@/lib/types";
 import {
   AlertCircleIcon,
   ChevronDown,
@@ -30,8 +30,7 @@ import {
 } from "../ui/menubar";
 
 interface PortfolioSellDialogProps {
-  item: PortfolioType;
-  parent: WineParentType;
+  item: InvestmentType;
   isDisabled: boolean;
   closeDialog: () => void;
 }
@@ -40,8 +39,6 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function PortfolioGiftSingleDialog({
   item,
-  parent,
-  isDisabled,
   closeDialog,
 }: PortfolioSellDialogProps) {
   const {

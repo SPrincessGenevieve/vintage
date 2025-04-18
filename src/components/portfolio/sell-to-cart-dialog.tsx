@@ -16,21 +16,18 @@ import { PortfolioType } from "@/app/context/UserContext";
 import SpinnerIcon from "@/images/Spinner";
 import { useUserContext } from "@/app/context/UserContext";
 import axios from "axios";
+import { InvestmentType } from "@/lib/types";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function SellDialog({
   market_value,
-  price,
-  lwin11,
   quantity,
   item,
 }: {
   market_value: string;
-  price: number | null;
-  lwin11: string;
   quantity: number;
-  item: PortfolioType;
+  item: InvestmentType;
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [open2, setOpen2] = useState(false);

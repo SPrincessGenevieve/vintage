@@ -24,17 +24,16 @@ import axios from "axios";
 import SpinnerIcon from "@/images/Spinner";
 import CustomToast from "../custom-toast";
 import { useRouter } from "next/navigation";
+import { InvestmentType } from "@/lib/types";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function BuyDialog({
   // market_value,
-  parent,
   item,
 }: {
   // market_value: number;
-  parent: WineParentType;
-  item: PortfolioType;
+  item: InvestmentType;
 }) {
   const { sessionkey, setUserDetails } = useUserContext();
   const [open, setOpen] = useState<boolean>(false);

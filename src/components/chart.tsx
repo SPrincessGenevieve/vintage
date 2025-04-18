@@ -16,20 +16,19 @@ import {
   SelectValue,
 } from "./ui/select";
 import { BookText } from "lucide-react";
+import { data_points } from "@/lib/data/data-points";
 
 interface ChartProps {
-  item: { monthly: any[]; yearly: any[] }; // Simplified type
   className?: string; // className prop for custom styling
   case_size: number;
   bottle_size?: string;
   name: string;
-  vintage: number;
+  vintage: number | null;
   isSpecial?: boolean;
   region?: string | string[] | undefined;
 }
 
 export default function Chart({
-  item,
   className,
   case_size,
   name,
@@ -40,6 +39,7 @@ export default function Chart({
 }: ChartProps) {
   const minimalConfig = {};
   const [selectedTab, setSelectedTab] = useState("yearly");
+  const item = data_points
 
   const modifiedData = (
     selectedTab === "monthly" ? item.monthly : item.yearly

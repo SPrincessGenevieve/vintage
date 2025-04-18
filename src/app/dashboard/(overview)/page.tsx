@@ -6,12 +6,59 @@ import TierThree from "@/components/dashboard/tier-three";
 import TierTwoR from "@/components/dashboard/tier-two-r";
 import TierThreeR from "@/components/dashboard/tier-three-r";
 import withAuth from "@/app/withAuth";
-
+import { vintex } from "@/lib/data/vintage";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 function Dashboard() {
+  const username = "sprincessgenevieve@gmail.com";
+  const password = "AmongUs@77";
+
+  const lwindata = vintex.flatMap((item) =>
+    item.results.map((innerItem) => innerItem.lwin11)
+  );
+
+  const fetchData = async () => {
+    if (!username || !password) {
+      return;
+    }
+    try {
+      const requests = lwindata.map((id) =>
+        axios.get(`https://va.gonearby.app/api/wine/data-points/${id}/`, {
+          auth: {
+            username: username,
+            password: password,
+          },
+        })
+      );
+
+      const responses = await Promise.all(requests);
+
+      const allData = responses.map((response) => response.data);
+
+      // Save to JSON and download
+      const blob = new Blob([JSON.stringify(allData, null, 2)], {
+        type: "application/json",
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "wine_data.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      console.log("✅ Downloaded wine_data.json");
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <div className="flex-grow bg-[#F4F6F8] h-full w-full">
       <p></p>
+      <Button onClick={fetchData}>FETCH ME</Button>
       <div className="w-full h-full min-h-[50px] max-h-[90px] flex bg-[#F4F6F8]">
         <TierOne />
       </div>

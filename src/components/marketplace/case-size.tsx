@@ -10,7 +10,7 @@ import {
 // Define the type for props
 interface CaseSizeProps {
   disabled?: boolean;
-  case_size: number[]; // Array of { value, label } objects
+  case_size: number[] | undefined; // Array of { value, label } objects
   selectedCaseSize: number | null; // The selected value
   case_size_title: string;
   bottle_size: string;

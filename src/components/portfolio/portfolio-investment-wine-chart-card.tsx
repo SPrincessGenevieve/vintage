@@ -5,11 +5,12 @@ import { useEffect } from "react";
 import { useUserContext } from "@/app/context/UserContext";
 import axios from "axios";
 import { LinkApi } from "@/lib/utils";
+import { InvestmentType } from "@/lib/types";
 
 export default function PortfolioInvestmentWineChart({
   item,
 }: {
-  item: PortfolioType;
+  item: InvestmentType;
 }) {
   const displayValue = (value: string | undefined) => {
     return value === "NA" ? "" : value || 0;
@@ -20,8 +21,8 @@ export default function PortfolioInvestmentWineChart({
     sessionkey,
     setUserDetails,
   } = useUserContext();
-  const lwin_11 = item.wine_vintage_details.lwin11;
-  const bottle_size = item.wine_vintage_details.bottle_size;
+  const lwin_11 = item.wine_vintage_details?.lwin11;
+  const bottle_size = item.wine_vintage_details?.bottle_size;
 
   setUserDetails({
     select_case_size_investment:
@@ -70,13 +71,17 @@ export default function PortfolioInvestmentWineChart({
 
   console.log("CASE SIZE PORTFOLIO: ", select_case_size_investment);
 
+  console.log(item.wine_vintage_details?.bottle_size)
+  console.log(item.wine_vintage_details?.vintage || null)
+  console.log(item.wine_parent?.name || item.basket_details?.name)
+
   return (
     <div className="flex flex-1 w-full h-full border rounded-2xl bg-white chart-cont">
       <div className="flex h-auto w-[80%]  chart-cont-left">
         <Chart
-          bottle_size={item.wine_vintage_details.bottle_size}
-          vintage={item.wine_vintage_details.vintage}
-          name={item.wine_parent.name || item.basket_details.name}
+          bottle_size={item.wine_vintage_details?.bottle_size}
+          vintage={item.wine_vintage_details?.vintage || null}
+          name={item.wine_parent?.name || item.basket_details?.name || ""}
           case_size={select_case_size_investment || 1}
           item={data_points}
         />
@@ -111,7 +116,7 @@ export default function PortfolioInvestmentWineChart({
               </p>
 
                 <p className={`gen-text-s text-[12px] text-black `}>
-                  {displayValue(item.wine_vintage_details.release_price)}
+                  {displayValue(String(item.wine_vintage_details?.release_price))}
                 </p>
             </div>
           </div>
@@ -143,7 +148,7 @@ export default function PortfolioInvestmentWineChart({
                 Drinking Window
               </p>
               <p className={`gen-text-s text-[12px] text-[#45D658]`}>
-                {displayValue(item.wine_vintage_details.drinking_window)}
+                {displayValue(item.wine_vintage_details?.drinking_window)}
               </p>
             </div>
           </div>
@@ -172,7 +177,7 @@ export default function PortfolioInvestmentWineChart({
             <div>
               <p className="text-muted-foreground  text-[12px]">Reviewed by</p>
               <p className={`gen-text-s text-[12px] text-black`}>
-                {displayValue(item.wine_vintage_details.rp_reviewer)}
+                {displayValue(item.wine_vintage_details?.rp_reviewer)}
               </p>
             </div>
           </div>
@@ -203,7 +208,7 @@ export default function PortfolioInvestmentWineChart({
             <div>
               <p className="text-muted-foreground  text-[12px]">Review date</p>
               <p className={`gen-text-s text-[12px] text-black`}>
-                {displayValue(item.wine_vintage_details.rp_released)}
+                {displayValue(item.wine_vintage_details?.rp_released)}
               </p>
             </div>
           </div>

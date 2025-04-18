@@ -29,21 +29,20 @@ import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { InvestmentListType } from "@/app/context/UserContext";
 import { useUserContext } from "@/app/context/UserContext";
 import axios from "axios";
+import { InvestmentType } from "@/lib/types";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 interface PortfolioManageProps {
   triggerContent: React.ReactNode;
-  item: InvestmentListType; // Add item as a prop to pass item data
-  parent: WineParentType;
+  item: InvestmentType; // Add item as a prop to pass item data
   investment_id: number;
-  onClick?: () => void
+  onClick?: () => void;
 }
 
 export default function PortfolioManage({
   triggerContent,
   item,
-  parent,
   investment_id,
   onClick,
 }: PortfolioManageProps) {
@@ -143,7 +142,6 @@ export default function PortfolioManage({
           <PortfolioGiftDialog
             closeDialog={() => setDialogOpen(false)}
             isDisabled={isDisabled}
-            parent={parent}
             item={item}
           />
         );
@@ -153,12 +151,11 @@ export default function PortfolioManage({
             investment_id={investment_id}
             closeDialog={() => setDialogOpen(false)}
             isDisabled={isDisabled}
-            parent={parent}
             item={item}
           />
         );
       case "Delivery Request":
-        return <PortfolioRequestDialog parent={parent} item={item} />;
+        return <PortfolioRequestDialog item={item} />;
       default:
         return null;
     }
@@ -173,7 +170,11 @@ export default function PortfolioManage({
               width={400}
               height={400}
               className="z-20 w-auto max-h-[150px]"
-              src={item.wine_image}
+              src={
+                item.wine_parent
+                  ? item.wine_parent.images[0]
+                  : item.basket_details?.image || "fallback.png"
+              }
               alt={""}
             ></Image>
             <p className="w-full text-left font-light">{item.case_size}X75</p>
@@ -181,7 +182,10 @@ export default function PortfolioManage({
           <div className="flex items-center gap-2">
             <CheckCircle color="#23dd23" size={20}></CheckCircle>
             <p className="text-[12px]">
-              Successfully sell wine {item.wine_name}
+              Successfully sell wine{" "}
+              {item.wine_vintage_details
+                ? item.wine_vintage_details.name
+                : item.basket_details?.name}
             </p>
           </div>
         </DialogContent>
@@ -221,7 +225,11 @@ export default function PortfolioManage({
             <DiscontinueWine
               investment_id={item.id}
               isOwnerText={""}
-              wine_name={item.wine_name}
+              wine_name={
+                item.wine_vintage_details
+                  ? item.wine_vintage_details.name
+                  : item.basket_details?.name || ""
+              }
             ></DiscontinueWine>
           </>
         ) : (

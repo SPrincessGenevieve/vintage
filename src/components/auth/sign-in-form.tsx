@@ -33,6 +33,9 @@ export default function SigninForm() {
     }
   }, [isLoggedIn]);
 
+  console.log("Email: ", email)
+  console.log("Password: ", password)
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true); // Set loading to true when the request starts

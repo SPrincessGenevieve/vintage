@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { WineCardT } from "@/lib/types";
+import { InvestmentType, WineCardT } from "@/lib/types";
 import { CircleAlert } from "lucide-react";
 import Image from "next/image";
 import { Label } from "../ui/label";
@@ -7,13 +7,11 @@ import { Input } from "../ui/input";
 import { PortfolioType, WineParentType } from "@/app/context/UserContext";
 
 interface PortfolioSellDialogProps {
-  item: PortfolioType;
-  parent: WineParentType;
+  item: InvestmentType;
 }
 
 export default function PortfolioGiftDialog({
   item,
-  parent,
 }: PortfolioSellDialogProps) {
   const [caseSize, setCaseSize] = useState("1x75");
   const bottleSize = item.wine_vintage_details.bottle_size;

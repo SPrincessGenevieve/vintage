@@ -5,7 +5,7 @@ export const investment = [
     wine_vintage: 1106,
     quantity: 1,
     case_size: 1,
-    market_value: "308.33",
+    market_value: 308.33,
     profit_lost: 0.0,
     profit_lost_by_percent: 0,
     investment_status: "pending",

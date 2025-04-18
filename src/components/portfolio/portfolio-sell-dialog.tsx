@@ -19,9 +19,10 @@ import { Button } from "../ui/button";
 import SpinnerIcon from "@/images/Spinner";
 import axios from "axios";
 import { Dialog, DialogContent } from "../ui/dialog";
+import { InvestmentType } from "@/lib/types";
 
 interface PortfolioSellDialogProps {
-  item: InvestmentListType; // Accept item as a prop
+  item: InvestmentType; // Accept item as a prop
   closeDialog: () => void;
 }
 
@@ -94,51 +95,18 @@ export default function PortfolioSellDialog({
 
   const handleSell = async (e: any) => {
     setLoader("");
-    let data;
-    data = {
-      quantity_to_sell: quantity,
-    };
-
-    try {
-      const response = await axios.put(
-        `${apiUrl}/api/wine/investment/${item.id}/?action=sell`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
-      if (response.status === 200 || response.status === 201) {
-        console.log("Success!");
-        setLoader("hidden");
-        setDialogOpen(false);
-        setIsSuccessDialog(true); // Trigger success dialog
-        setUserDetails({
-          sellQuantity: sellQuantity,
-        });
+    setTimeout(() => {
+      console.log("Success!");
+      setLoader("hidden");
+      setDialogOpen(false);
+      setIsSuccessDialog(true); // Trigger success dialog
+      setUserDetails({
+        sellQuantity: sellQuantity,
+      });
+      setTimeout(() => {
         location.reload();
-      }
-    } catch (error: any) {
-      console.error("Error during request:", error);
-      if (error.response) {
-        setLoader("hidden");
-        if (error.response.status === 400) {
-          setSellMessage(error.response.data.details); // You can proceed with the logic here based on the response
-          setTimeout(() => {
-            setSellMessage("");
-          }, 5000);
-        } else if (error.response.status === 500) {
-          setSellMessage(error.response.data.details); // You can proceed with the logic here based on the response
-          setTimeout(() => {
-            setSellMessage("");
-          }, 5000);
-        }
-      } else {
-        console.error("Error Message: ", error.message); // In case the request didn't reach the server
-      }
-    }
+      }, 1000);
+    }, 1000);
   };
 
   const successDialog = (isOpen: boolean) => {
@@ -150,7 +118,11 @@ export default function PortfolioSellDialog({
               width={400}
               height={400}
               className="z-20 w-auto max-h-[150px]"
-              src={item.wine_image}
+              src={
+                item.wine_parent
+                  ? item.wine_parent.images[0]
+                  : item.basket_details?.image || "fallback.png"
+              }
               alt={""}
             ></Image>
             <p className="w-full text-left font-light">{item.case_size}X75</p>
@@ -158,7 +130,10 @@ export default function PortfolioSellDialog({
           <div className="flex items-center gap-2">
             <CheckCircle color="#23dd23" size={20}></CheckCircle>
             <p className="text-[12px]">
-              Successfully sell wine {item.wine_name}
+              Successfully sell wine{" "}
+              {item.wine_vintage_details
+                ? item.wine_vintage_details.name
+                : item.basket_details?.name}
             </p>
           </div>
         </DialogContent>
@@ -176,7 +151,11 @@ export default function PortfolioSellDialog({
                 <Image
                   width={300}
                   height={300}
-                  src={item.wine_image}
+                  src={
+                    item.wine_parent
+                      ? item.wine_parent.images[0]
+                      : item.basket_details?.image || "fallback.png"
+                  }
                   alt="card"
                   className="z-20 w-auto max-h-[150px]"
                 />
@@ -184,13 +163,13 @@ export default function PortfolioSellDialog({
             </div>
             <div className="flex flex-col">
               <p className="text-[12px] font-semibold">
-                {item.wine_name}
+                {item.wine_vintage_details
+                  ? item.wine_vintage_details.name
+                  : item.basket_details?.name}
               </p>
               <div className="text-gray-400 flex justify-between">
                 <p className="text-[10px] font-light">Vintage</p>
-                <p className="text-[10px] font-light">
-                  {item.vintage}
-                </p>
+                <p className="text-[10px] font-light">{item.wine_vintage}</p>
               </div>
               <div className="text-gray-400 flex justify-between">
                 <p className="text-[10px] font-light">Quantity</p>
@@ -214,7 +193,10 @@ export default function PortfolioSellDialog({
           <div className="flex gap-2">
             <CheckCircle color="#23dd23" size={20}></CheckCircle>
             <p className="text-[12px]">
-              Successfully sell wine {item.wine_name}
+              Successfully sell wine{" "}
+              {item.wine_vintage_details
+                ? item.wine_vintage_details.name
+                : item.basket_details?.name}
             </p>
           </div>
         </>
@@ -227,7 +209,11 @@ export default function PortfolioSellDialog({
                   <Image
                     width={300}
                     height={300}
-                    src={item.wine_image}
+                    src={
+                      item.wine_parent
+                        ? item.wine_parent.images[0]
+                        : item.basket_details?.image || "fallback.png"
+                    }
                     alt="card"
                     className="z-20 w-auto max-h-[150px]"
                   />
@@ -235,13 +221,13 @@ export default function PortfolioSellDialog({
               </div>
               <div className="flex flex-col">
                 <p className="text-[12px] font-semibold">
-                  {item.wine_name}
+                  {item.wine_vintage_details
+                    ? item.wine_vintage_details.name
+                    : item.basket_details?.name}
                 </p>
                 <div className="text-gray-400 flex justify-between">
                   <p className="text-[10px] font-light">Vintage</p>
-                  <p className="text-[10px] font-light">
-                    {item.vintage}
-                  </p>
+                  <p className="text-[10px] font-light">{item.wine_vintage}</p>
                 </div>
                 <div className="text-gray-400 flex justify-between">
                   <p className="text-[10px] font-light">Quantity</p>
