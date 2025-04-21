@@ -46,7 +46,7 @@ export default function OrderDeleteConfirmation({
               onClick={() => onDelete(selectedItems)} // Call the onDelete function
             >
               <div className={`${loading}`}>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
               Remove
             </Button>

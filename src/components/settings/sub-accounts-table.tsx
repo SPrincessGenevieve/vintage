@@ -343,7 +343,7 @@ export default function SubAccountsTable() {
                               {loading ? (
                                 <>
                                   <div>
-                                    <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                                    <SpinnerIcon stroke_color="white"></SpinnerIcon>
                                   </div>
                                 </>
                               ) : (

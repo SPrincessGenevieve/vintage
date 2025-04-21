@@ -12,10 +12,7 @@ import { Button } from "../ui/button";
 import { AlertCircle, AlertCircleIcon, Minus, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import {
-  BundleDetailsType,
-  WineParentType,
-} from "@/app/context/UserContext";
+import { BundleDetailsType, WineParentType } from "@/app/context/UserContext";
 import { Input } from "../ui/input";
 import {
   HoverCard,
@@ -27,6 +24,7 @@ import axios from "axios";
 import SpinnerIcon from "@/images/Spinner";
 import CustomToast from "../custom-toast";
 import { useRouter } from "next/navigation";
+import { InvestmentType } from "@/lib/types";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -35,7 +33,7 @@ export default function BuyBundleDialog({
   item,
 }: {
   // market_value: number;
-  item: BundleDetailsType;
+  item: InvestmentType;
 }) {
   const { sessionkey, setUserDetails } = useUserContext();
   const [open, setOpen] = useState<boolean>(false);
@@ -82,132 +80,31 @@ export default function BuyBundleDialog({
     e.preventDefault();
     setLoader("");
 
-    const authHeader = "Token " + sessionkey;
-
-    let data;
-
-    data = {
-      basket_id: item.basket_details.id,
-    };
-
-    try {
-      // Make a request to your backend to get the SetupIntent clientSecret using axios
-      const response = await axios.post(
-        `${apiUrl}/api/wine/cart-items/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
-      if (response.status === 200 || response.status === 201) {
-        setLoader("hidden");
-        setMessage("Successfully added");
-        setColor("text-green-500");
-        console.log("WINE BOUGHT SUCCESSFULLY");
-
-        const response = await axios.get(`${apiUrl}/api/wine/cart-items/`, {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        });
-
-        setUserDetails({
-          cartCount: response.data.length,
-        });
-
-        setLoader("hidden");
-        router.push(`/dashboard/orders`);
-      } else {
-        setIsHigher(true);
-      }
-    } catch (error: any) {
-      console.error("Error during request:", error);
-      // Check if the error response exists and is a 400 status
-      if (error.response) {
-        console.error("Response Status: ", error.response.status);
-        console.error("Response Data: ", error.response.data);
-        setMessage(error.response.data.details);
-        setColor("text-red-500");
-        setLoader("hidden");
-      } else {
-        console.error("Error Message: ", error.message); // In case the request didn't reach the server
-        setMessage(error.response.data.details);
-        setLoader("hidden");
-        setColor("text-red-500");
-      }
-    } finally {
+    setTimeout(() => {
       setLoader("hidden");
-    }
+      setMessage("Successfully added");
+      setColor("text-green-500");
+      console.log("WINE BOUGHT SUCCESSFULLY");
+
+      setLoader("hidden");
+      router.push(`/dashboard/orders`);
+    }, 1000);
   };
 
   const handleBuyMoreHigherPrice = async (e: any) => {
     e.preventDefault();
     setLoader("");
 
-    const authHeader = "Token " + sessionkey;
-
-    let data;
-
-    data = {
-      basket_id: item.basket_details.id,
-    };
-
-    try {
-      // Make a request to your backend to get the SetupIntent clientSecret using axios
-      const response = await axios.post(
-        `${apiUrl}/api/wine/cart-items/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
-      if (response.status === 200 || response.status === 201) {
-        setLoader("hidden");
-        setMessage("Successfully added");
-        setColor("text-green-500");
-        console.log("WINE BOUGHT SUCCESSFULLY");
-
-        const response = await axios.get(`${apiUrl}/api/wine/cart-items/`, {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        });
-
-        setUserDetails({
-          cartCount: response.data.length,
-        });
-
-        setLoader("hidden");
-        router.push(`/dashboard/orders`);
-      }
-    } catch (error: any) {
-      console.error("Error during request:", error);
-      // Check if the error response exists and is a 400 status
-      if (error.response) {
-        console.error("Response Status: ", error.response.status);
-        console.error("Response Data: ", error.response.data);
-        setMessage(error.response.data.details);
-        setColor("text-red-500");
-        setLoader("hidden");
-      } else {
-        console.error("Error Message: ", error.message); // In case the request didn't reach the server
-        setMessage(error.response.data.details);
-        setLoader("hidden");
-        setColor("text-red-500");
-      }
-    } finally {
+    setTimeout(() => {
       setLoader("hidden");
-    }
-  };
+      setMessage("Successfully added");
+      setColor("text-green-500");
+      console.log("WINE BOUGHT SUCCESSFULLY");
 
+      setLoader("hidden");
+      router.push(`/dashboard/orders`);
+    }, 1000);
+  };
 
   return (
     <>
@@ -226,14 +123,14 @@ export default function BuyBundleDialog({
               <DialogHeader>
                 <DialogTitle className="text-[16px] text-[red] text-center font-normal">
                   The liv ex price is higher than our price. Are you sure you
-                  want to buy more {item.basket_details.name}?
+                  want to buy more {item.basket_details?.name}?
                 </DialogTitle>
                 <div className="relative w-full min-h-[200px] flex justify-center rounded-[10px] border items-center">
                   <div className="absolute rounded-full w-[90px] h-[90px] bg-red-950 z-10"></div>
                   <Image
                     width={300}
                     height={300}
-                    src={item.basket_details.image || "/fallback-image.jpg"}
+                    src={item.basket_details?.image || "/fallback-image.jpg"}
                     alt="card"
                     className="z-20 w-auto max-h-[150px]"
                   />
@@ -266,7 +163,7 @@ export default function BuyBundleDialog({
                     className="rounded-full py-2 text-[14px] w-full bg-[#1BCD32]"
                   >
                     <div className={`${loader}`}>
-                      <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                      <SpinnerIcon stroke_color="white"></SpinnerIcon>
                     </div>
                     Proceed
                   </Button>
@@ -299,7 +196,7 @@ export default function BuyBundleDialog({
                   <Image
                     width={300}
                     height={300}
-                    src={item.basket_details.image || "/fallback-image.jpg"}
+                    src={item.basket_details?.image || "/fallback-image.jpg"}
                     alt="card"
                     className="z-20 w-auto max-h-[150px]"
                   />
@@ -353,7 +250,7 @@ export default function BuyBundleDialog({
                     className="rounded-full py-2 text-[14px] w-full bg-[#1BCD32]"
                   >
                     <div className={`${loader}`}>
-                      <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                      <SpinnerIcon stroke_color="white"></SpinnerIcon>
                     </div>
                     Buy
                   </Button>

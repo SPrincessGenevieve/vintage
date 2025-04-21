@@ -56,7 +56,6 @@ export default function PortfolioWineCard({
   item: InvestmentType;
   year: number | null;
 }) {
-  console.log("ITEM LIST DETAIL: ", item);
   const [number_of_cases, setCases] = useState<number>(1);
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -74,6 +73,8 @@ export default function PortfolioWineCard({
   const vintage = item?.wine_vintage_details;
   const parent = item?.wine_parent;
   const cases_list = vintage?.available_case_size.map((item) => item);
+
+  console.log("DATA INSIDE: ", item)
 
   const bottle_size =
     vintage?.bottle_size === "0750"
@@ -214,14 +215,6 @@ export default function PortfolioWineCard({
     bottleSize === "1500" ? 2 : bottleSize === "3000" ? 4 : 8;
 
 
-  console.log(
-    "MARKET VALUEEEE: ",
-    item.basket_details !== null && is_user_investment
-      ? marketPriceVal * quantity
-      : is_special_volumes
-      ? marketPriceVal * bottleSizeVal
-      : (marketPriceVal / processed_case) * (quantity * case_size || 1)
-  );
 
   // Convert market_value to a number and ensure it's a whole number
   const market_value = Math.floor(Number(item.market_value) || 0);

@@ -18,35 +18,7 @@ export default function WineChartRegion({ item, parent, region }: ChartType) {
   const { select_case_size_region, data_points, sessionkey, setUserDetails } =
     useUserContext();
   const lwin_11 = item.lwin11;
-  useEffect(() => {
-    async function fetchData() {
-      if (!sessionkey) return;
-
-      const authHeader = "Token " + sessionkey;
-
-      try {
-        // Fetch the first page to get the total number of pages and wine details
-        const response = await axios.get(
-          `${LinkApi.href}/data-points/${lwin_11}/`,
-          {
-            headers: {
-              Authorization: authHeader,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        setUserDetails({
-          data_points: response.data,
-        });
-      } catch (error) {
-        console.error("Error fetching wine data:", error);
-      } finally {
-      }
-    }
-
-    fetchData();
-  }, [sessionkey, lwin_11]);
+  
 
   console.log("Selected Case Size REGION: ", parent);
 
@@ -64,7 +36,6 @@ export default function WineChartRegion({ item, parent, region }: ChartType) {
           vintage={item.vintage}
           name={parent ? parent.name : ""}
           case_size={select_case_size_region}
-          item={data_points}
         />
       </div>
       <div className="p-4 grid grid-cols-2 gap-2 w-[20%] min-w-[250px] chart-cont-right">

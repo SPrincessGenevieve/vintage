@@ -16,6 +16,7 @@ import { BundleDetailsType } from "@/app/context/UserContext";
 import SpinnerIcon from "@/images/Spinner";
 import { useUserContext } from "@/app/context/UserContext";
 import axios from "axios";
+import { InvestmentType } from "@/lib/types";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -28,7 +29,7 @@ export default function SellBundleDialog({
   market_value: string;
   price: number | null;
   quantity: number;
-  item: BundleDetailsType;
+  item: InvestmentType;
 }) {
   const [open, setOpen] = useState<boolean>(false);
   const [open2, setOpen2] = useState(false);
@@ -147,7 +148,7 @@ export default function SellBundleDialog({
               className="rounded-full bg-[#8D1B22] py-2 text-[14px] w-full"
             >
               <div className={`${loader}`}>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
               Sell
             </Button>

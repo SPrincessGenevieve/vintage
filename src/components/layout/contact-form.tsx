@@ -55,7 +55,7 @@ export default function ContactForm() {
       <Button onClick={handleSubmitMessage} className="text-[12px] w-full mt-4">
         {loading && (
           <div>
-            <SpinnerIcon strokeColor="white"></SpinnerIcon>
+            <SpinnerIcon stroke_color="white"></SpinnerIcon>
           </div>
         )}
         Submit ticket

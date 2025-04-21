@@ -38,39 +38,17 @@ export default function SellDialog({
 
   const handleAddToCart = async () => {
     setLoader("");
-    let data;
-    data = {
-      quantity_to_sell: quantity,
-    };
-    try {
-      const response = await axios.put(
-        `${apiUrl}/api/wine/investment/${item.id}/?action=sell`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
-      if (response.status === 200 || response.status === 201) {
-        console.log("Success!");
-        setLoader("hidden");
-        // Close the parent dialog and open the child dialog
-        setOpen(false); // Close the parent dialog
-        setOpen2(true); // Open the child dialogr success dialog
-        setUserDetails({
-          sellQuantity: sellQuantity,
-        });
-      }
-    } catch (error: any) {
-      console.error("Error during request:", error);
-      if (error.response) {
-        setLoader("hidden");
-      } else {
-        console.error("Error Message: ", error.message); // In case the request didn't reach the server
-      }
-    }
+
+    setTimeout(() => {
+      console.log("Success!");
+      setLoader("hidden");
+      // Close the parent dialog and open the child dialog
+      setOpen(false); // Close the parent dialog
+      setOpen2(true); // Open the child dialogr success dialog
+      setUserDetails({
+        sellQuantity: sellQuantity,
+      });
+    }, 1000);
   };
 
   useEffect(() => {
@@ -136,7 +114,7 @@ export default function SellDialog({
               className="rounded-full bg-[#8D1B22] py-2 text-[14px] w-full"
             >
               <div className={`${loader}`}>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
               Sell
             </Button>

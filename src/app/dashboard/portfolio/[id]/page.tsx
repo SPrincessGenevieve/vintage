@@ -19,15 +19,19 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 function Wine(props: { params: Promise<{ id: number }> }) {
   const { sessionkey, select_case_size_investment, setUserDetails } =
     useUserContext();
-  const [id, setId] = useState<number | null>(null);
-  const [data, setData] = useState(investment[id || 0]);
-  const [dataParent, setDataParent] = useState(investment[id || 0].wine_parent)
-  const vintage_years = investment.map((item, index) =>(
-    item.wine_vintage_details?.vintage
-  ))
-  const [dataYear, setDataYear] = useState(investment[id || 0].wine_vintage_details?.vintage || null)
-  console.log("VINTAGE YEARS: ", vintage_years)
+  const [id, setId] = useState<number>(0);
+  const [data, setData] = useState(investment[id]);
+  const [dataParent, setDataParent] = useState(
+    investment[id]?.wine_parent ?? null
+  );
 
+  const [dataYear, setDataYear] = useState(
+    investment[id || 0]?.wine_vintage_details?.vintage ?? null
+  );
+
+  // console.log("PORTFOLIO DATA: ",  data)
+  // console.log("PORTFOLIO INDEX: ",  id)
+  console.log(investment[id].wine_parent?.name);
 
   // Wait for props.params to resolve and set the id
   useEffect(() => {
@@ -41,14 +45,12 @@ function Wine(props: { params: Promise<{ id: number }> }) {
   return (
     <div className="bg-[#FCFCFC] flex flex-col w-full h-full">
       {/* Header */}
-      <PortfolioChildHeader name={dataParent?.name || ""}></PortfolioChildHeader>
+      <PortfolioChildHeader name={investment[id].wine_parent?.name || ""} />
+
       <div className="flex flex-col bg-[#FCFCFC] w-full h-full">
         {/* Wine Card */}
         <div className="px-2 py-2 w-full h-full">
-          <PortfolioWineCard
-            item={data}
-            year={dataYear}
-          />
+          <PortfolioWineCard item={investment[id]} year={investment[id].wine_vintage_details?.vintage || null} />
         </div>
         {/* Chart Card */}
         <div className="px-2 pb-2 port-charts-cont w-full h-auto">

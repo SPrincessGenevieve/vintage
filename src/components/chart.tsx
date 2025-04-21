@@ -45,9 +45,10 @@ export default function Chart({
     selectedTab === "monthly" ? item.monthly : item.yearly
   ).map((entry) => ({
     ...entry,
-    value: entry.value * case_size, // Adjust value
-    performance: entry.performance, // Ensure performance is included
+    value: Number(entry.value) * Number(case_size), // Ensure both are numbers
+    performance: entry.performance,
   }));
+  
 
   const getOptimalStep = (range: number) => {
     const stepSizes = [

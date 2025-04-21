@@ -371,7 +371,7 @@ export default function PortfolioGiftSingleDialog({
               className="rounded-full w-[150px] bg-[#810909]"
             >
               <div className={`${loader}`}>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
               Yes
             </Button>
@@ -384,7 +384,7 @@ export default function PortfolioGiftSingleDialog({
               className="rounded-full w-[150px] bg-[#C4AD93]"
             >
               <div className={`${loader}`}>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
               Gift
             </Button>

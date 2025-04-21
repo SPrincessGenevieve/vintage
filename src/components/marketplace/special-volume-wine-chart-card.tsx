@@ -24,37 +24,6 @@ export default function SpecialVolumeWineChart({
     useUserContext();
   const lwin_11 = item.lwin11;
 
-  useEffect(() => {
-    async function fetchData() {
-      if (!sessionkey) return;
-
-      const authHeader = "Token " + sessionkey;
-
-      try {
-        // Fetch the first page to get the total number of pages and wine details
-        const response = await axios.get(
-          `${LinkApi.href}/data-points/${lwin_11}/`,
-          {
-            headers: {
-              Authorization: authHeader,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        setUserDetails({
-          data_points: response.data,
-        });
-      } catch (error) {
-        console.error("Error fetching wine data:", error);
-      } finally {
-      }
-    }
-
-    fetchData();
-  }, [sessionkey, lwin_11]);
-
-  console.log("NAME: ", item.name);
 
   return (
     <div className="flex flex-1 w-full h-full border rounded-2xl bg-white chart-cont">
@@ -64,7 +33,6 @@ export default function SpecialVolumeWineChart({
           vintage={item.vintage}
           isSpecial={true}
           case_size={select_case_size_special}
-          item={data_points}
         />
       </div>
       <div className="p-4 grid grid-cols-2 gap-2 w-[20%] min-w-[250px] chart-cont-right">

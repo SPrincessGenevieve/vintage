@@ -1,14 +1,14 @@
 import React from "react";
 
 type IconProps = {
-  strokeColor: string; // Prop for stroke color
+  stroke_color: string; // Prop for stroke color
 };
 
-const SpinnerIcon: React.FC<IconProps> = ({ strokeColor }) => (
+const SpinnerIcon: React.FC<IconProps> = ({ stroke_color }) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
     <path
       fill="none"
-      stroke={strokeColor}
+      stroke={stroke_color}
       stroke-width="20"
       stroke-linecap="round"
       stroke-dasharray="300 385"

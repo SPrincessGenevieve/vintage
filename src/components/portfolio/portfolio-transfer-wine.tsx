@@ -121,7 +121,7 @@ export default function PortfolioTransferWine({
                     src={
                       item.wine_parent
                         ? item.wine_parent.images[0]
-                        : item.basket_details?.image || "fallback.png"
+                        : item.basket_details?.image || "/fallback.png"
                     }
                     alt="card"
                     className="z-20 w-auto max-h-[150px]"
@@ -179,7 +179,7 @@ export default function PortfolioTransferWine({
                       src={
                         item.wine_parent
                           ? item.wine_parent.images[0]
-                          : item.basket_details?.image || "fallback.png"
+                          : item.basket_details?.image || "/fallback.png"
                       }
                       alt="card"
                       className="z-20 w-auto max-h-[150px]"
@@ -282,7 +282,7 @@ export default function PortfolioTransferWine({
                   {loading ? (
                     <>
                       <div>
-                        <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                        <SpinnerIcon stroke_color="white"></SpinnerIcon>
                       </div>
                     </>
                   ) : (

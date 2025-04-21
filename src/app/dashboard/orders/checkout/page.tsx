@@ -276,7 +276,7 @@ function CheckOut() {
               className="w-full max-w-[400px] rounded-full"
             >
               <div className={`${loading}`}>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
               <Wallet></Wallet>Pay Now
             </Button>

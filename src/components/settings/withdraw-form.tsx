@@ -112,7 +112,7 @@ export default function WithdrawForm() {
         >
           {loadingCancel && (
             <div>
-              <SpinnerIcon strokeColor="black"></SpinnerIcon>
+              <SpinnerIcon stroke_color="black"></SpinnerIcon>
             </div>
           )}
           Cancel
@@ -124,7 +124,7 @@ export default function WithdrawForm() {
         >
           {loading && (
             <div>
-              <SpinnerIcon strokeColor="white"></SpinnerIcon>
+              <SpinnerIcon stroke_color="white"></SpinnerIcon>
             </div>
           )}
           Withdraw

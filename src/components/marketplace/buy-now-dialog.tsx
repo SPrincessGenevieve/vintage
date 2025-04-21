@@ -331,7 +331,7 @@ export default function BuyNowDialog({
                   className="py-2 text-[14px] w-full"
                 >
                   <div className={`${loader}`}>
-                    <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                    <SpinnerIcon stroke_color="white"></SpinnerIcon>
                   </div>
                   Proceed
                 </Button>
@@ -387,7 +387,7 @@ export default function BuyNowDialog({
                   className="py-2 text-[14px] w-full rounded-full"
                 >
                   <div className={`${loader}`}>
-                    <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                    <SpinnerIcon stroke_color="white"></SpinnerIcon>
                   </div>
                   Buy now
                 </Button>

@@ -41,37 +41,7 @@ export default function PortfolioRareWineChart({
         : undefined, // Convert null to undefined
   });
 
-  useEffect(() => {
-    async function fetchData() {
-      if (!sessionkey) return;
-
-      const authHeader = "Token " + sessionkey;
-
-      try {
-        // Fetch the first page to get the total number of pages and wine details
-        const response = await axios.get(
-          `${LinkApi.href}/data-points/${lwin_11}/`,
-          {
-            headers: {
-              Authorization: authHeader,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        setUserDetails({
-          data_points: response.data,
-        });
-      } catch (error) {
-        console.error("Error fetching wine data:", error);
-      } finally {
-      }
-    }
-
-    fetchData();
-  }, [sessionkey, lwin_11]);
-
-  console.log("CASE SIZE RARE: ", select_case_size_rare);
+ 
 
   return (
     <div className="flex flex-1 w-full h-full border rounded-2xl bg-white chart-cont">
@@ -82,7 +52,6 @@ export default function PortfolioRareWineChart({
           vintage={item.wine_vintage_details.vintage}
           name={item.wine_parent.name || item.basket_details.name}
           case_size={select_case_size_rare || 1}
-          item={data_points}
         />
       </div>
       <div className="p-4 grid grid-cols-2 gap-2 w-[20%] min-w-[250px] chart-cont-right">

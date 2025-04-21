@@ -212,7 +212,7 @@ export default function PortfolioGiftDialog({
                   src={
                     item.wine_parent
                       ? item.wine_parent.images[0]
-                      : item.basket_details?.image || "fallback.png"
+                      : item.basket_details?.image || "/fallback.png"
                   }
                   alt="card"
                   className="z-20 w-auto max-h-[150px]"
@@ -270,7 +270,7 @@ export default function PortfolioGiftDialog({
                     src={
                       item.wine_parent
                         ? item.wine_parent.images[0]
-                        : item.basket_details?.image || "fallback.png"
+                        : item.basket_details?.image || "/fallback.png"
                     }
                     alt="card"
                     className="z-20 w-auto max-h-[150px]"
@@ -397,7 +397,7 @@ export default function PortfolioGiftDialog({
                   className="rounded-full w-[150px] bg-[#810909]"
                 >
                   <div className={`${loader}`}>
-                    <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                    <SpinnerIcon stroke_color="white"></SpinnerIcon>
                   </div>
                   Yes
                 </Button>
@@ -410,7 +410,7 @@ export default function PortfolioGiftDialog({
                   className="rounded-full w-[150px] bg-[#C4AD93]"
                 >
                   <div className={`${loader}`}>
-                    <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                    <SpinnerIcon stroke_color="white"></SpinnerIcon>
                   </div>
                   Gift
                 </Button>

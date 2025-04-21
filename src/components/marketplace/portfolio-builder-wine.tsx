@@ -224,7 +224,7 @@ export default function PortfolioBuilderWine({}) {
               >
                 {loading && (
                   <div>
-                    <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                    <SpinnerIcon stroke_color="white"></SpinnerIcon>
                   </div>
                 )}
                 Add to Cart

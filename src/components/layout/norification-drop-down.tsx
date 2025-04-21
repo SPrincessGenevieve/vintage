@@ -136,7 +136,7 @@ export default function NotificationDropdown() {
                                 : "hidden"
                             }`}
                           >
-                            <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                            <SpinnerIcon stroke_color="white"></SpinnerIcon>
                           </div>
                           Accept
                         </Button>
@@ -153,7 +153,7 @@ export default function NotificationDropdown() {
                                 : "hidden"
                             }`}
                           >
-                            <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                            <SpinnerIcon stroke_color="white"></SpinnerIcon>
                           </div>
                           Reject
                         </Button>

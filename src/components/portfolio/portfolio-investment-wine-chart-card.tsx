@@ -6,6 +6,7 @@ import { useUserContext } from "@/app/context/UserContext";
 import axios from "axios";
 import { LinkApi } from "@/lib/utils";
 import { InvestmentType } from "@/lib/types";
+import { data_points } from "@/lib/data/data-points";
 
 export default function PortfolioInvestmentWineChart({
   item,
@@ -39,41 +40,7 @@ export default function PortfolioInvestmentWineChart({
         : undefined, // Convert null to undefined
   });
 
-  useEffect(() => {
-    async function fetchData() {
-      if (!sessionkey) return;
 
-      const authHeader = "Token " + sessionkey;
-
-      try {
-        // Fetch the first page to get the total number of pages and wine details
-        const response = await axios.get(
-          `${LinkApi.href}/data-points/${lwin_11}/`,
-          {
-            headers: {
-              Authorization: authHeader,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        setUserDetails({
-          data_points: response.data,
-        });
-      } catch (error) {
-        console.error("Error fetching wine data:", error);
-      } finally {
-      }
-    }
-
-    fetchData();
-  }, [sessionkey, lwin_11]);
-
-  console.log("CASE SIZE PORTFOLIO: ", select_case_size_investment);
-
-  console.log(item.wine_vintage_details?.bottle_size)
-  console.log(item.wine_vintage_details?.vintage || null)
-  console.log(item.wine_parent?.name || item.basket_details?.name)
 
   return (
     <div className="flex flex-1 w-full h-full border rounded-2xl bg-white chart-cont">
@@ -83,7 +50,6 @@ export default function PortfolioInvestmentWineChart({
           vintage={item.wine_vintage_details?.vintage || null}
           name={item.wine_parent?.name || item.basket_details?.name || ""}
           case_size={select_case_size_investment || 1}
-          item={data_points}
         />
       </div>
       <div className="p-4 grid grid-cols-2 gap-2 w-[20%] min-w-[250px] chart-cont-right">
@@ -115,9 +81,9 @@ export default function PortfolioInvestmentWineChart({
                 Lifetime Performance
               </p>
 
-                <p className={`gen-text-s text-[12px] text-black `}>
-                  {displayValue(String(item.wine_vintage_details?.release_price))}
-                </p>
+              <p className={`gen-text-s text-[12px] text-black `}>
+                {displayValue(String(item.wine_vintage_details?.release_price))}
+              </p>
             </div>
           </div>
         </div>

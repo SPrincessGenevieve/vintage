@@ -17,7 +17,7 @@ export default function LevelGradient() {
       {MockProfileLevelData.filter(
         (item) => item.name === level_name
       ).map((item, index) => (
-        <HoverCard>
+        <HoverCard key={index}>
           <HoverCardTrigger>
             <div
               className="relative w-40 py-4 px-1 rounded-xl flex flex-col items-center justify-center port-card-cont"

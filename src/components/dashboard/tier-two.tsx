@@ -78,7 +78,7 @@ export default function TierTwo() {
     <div className="flex flex-col w-full h-full gap-2 relative">
       <div className="flex w-auto h-[10%] gap-2 justify-between items-center">
         <div className="w-full flex gap-2 items-center">
-          <PortIcon strokeColor="#7351C2" />
+          <PortIcon stroke_color="#7351C2" />
           <p className="text-[12px]">Portfolio Performance</p>
         </div>
         <Menubar className="p-0 m-0 h-auto">

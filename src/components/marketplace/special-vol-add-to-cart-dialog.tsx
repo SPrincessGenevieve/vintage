@@ -314,7 +314,7 @@ export default function SpecialVolAddToCartDialog({
                   className="py-2 text-[14px] w-full"
                 >
                   <div className={`${loader}`}>
-                    <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                    <SpinnerIcon stroke_color="white"></SpinnerIcon>
                   </div>
                   Proceed
                 </Button>
@@ -369,7 +369,7 @@ export default function SpecialVolAddToCartDialog({
                   className="py-2 text-[14px] w-full rounded-3xl"
                 >
                   <div className={`${loader}`}>
-                    <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                    <SpinnerIcon stroke_color="white"></SpinnerIcon>
                   </div>
                   Add to cart
                 </Button>

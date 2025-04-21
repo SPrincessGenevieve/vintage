@@ -17,27 +17,27 @@ export const links = [
   {
     name: "Dashboard",
     href: "/dashboard",
-    icon: <DashIcon strokeColor="white"/>,
+    icon: <DashIcon stroke_color="white"/>,
   },
   {
     name: "Portfolio",
     href: "/dashboard/portfolio",
-    icon: <PortIcon strokeColor="white" />,
+    icon: <PortIcon stroke_color="white" />,
   },
   {
     name: "Marketplace",
     href: "/dashboard/marketplace",
-    icon: <MarketIcon strokeColor="white"/>,
+    icon: <MarketIcon stroke_color="white"/>,
   },
   {
     name: "Storage",
     href: "/dashboard/storage",
-    icon: <StorageIcon strokeColor="white"/>,
+    icon: <StorageIcon stroke_color="white"/>,
   },
   // {
   //   name: "Market Report",
   //   href: "/dashboard/market-report",
-  //   icon: <MarketReportIcon strokeColorColor="white"/>,
+  //   icon: <MarketReportIcon stroke_colorColor="white"/>,
   // },
   {
     name: "Insights",

@@ -37,7 +37,7 @@ export default function SettingsHeader() {
             {/* Show spinner only if the current link is clicked and loading */}
             {isPending && loadingLink === item.href ? (
               <div className="w-5">
-                <SpinnerIcon strokeColor="white" />
+                <SpinnerIcon stroke_color="white" />
               </div>
             ) : null}
             <div>

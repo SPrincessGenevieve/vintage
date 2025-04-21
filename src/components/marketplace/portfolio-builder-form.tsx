@@ -274,7 +274,7 @@ export default function PortfolioBuilderForm() {
           >
             {loading && (
               <div>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
             )}
             Generate

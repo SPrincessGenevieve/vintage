@@ -48,7 +48,7 @@ export default function OrderDeleteSingle({
               onClick={onDelete} // Call the onDelete function directly
             >
               <div className={`${loading}`}>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
               Remove
             </Button>

@@ -121,7 +121,7 @@ export default function PortfolioSellDialog({
               src={
                 item.wine_parent
                   ? item.wine_parent.images[0]
-                  : item.basket_details?.image || "fallback.png"
+                  : item.basket_details?.image || "/fallback.png"
               }
               alt={""}
             ></Image>
@@ -154,7 +154,7 @@ export default function PortfolioSellDialog({
                   src={
                     item.wine_parent
                       ? item.wine_parent.images[0]
-                      : item.basket_details?.image || "fallback.png"
+                      : item.basket_details?.image || "/fallback.png"
                   }
                   alt="card"
                   className="z-20 w-auto max-h-[150px]"
@@ -212,7 +212,7 @@ export default function PortfolioSellDialog({
                     src={
                       item.wine_parent
                         ? item.wine_parent.images[0]
-                        : item.basket_details?.image || "fallback.png"
+                        : item.basket_details?.image || "/fallback.png"
                     }
                     alt="card"
                     className="z-20 w-auto max-h-[150px]"
@@ -310,7 +310,7 @@ export default function PortfolioSellDialog({
               className="w-40 bg-[#8D1B22] rounded-full"
             >
               <div className={`${loader}`}>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
               Sell
             </Button>

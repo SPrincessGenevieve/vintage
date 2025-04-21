@@ -201,7 +201,7 @@ export default function SubAccountForm() {
           >
             {loading ? (
               <div>
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
             ) : (
               <></>

@@ -29,13 +29,13 @@ export default function PortfolioTable() {
         const basket_parent = row.original.basket_details?.image;
         const image = wine_parent ? wine_parent.images[0] : basket_parent;
         const basket_list = row.original.basket_details;
-        const index_num = row.index
+        const index_num = row.index;
         return (
           <Link
             href={
               basket_list === null
                 ? `/dashboard/portfolio/${index_num}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
           >
             <div className="flex justify-center">
@@ -52,7 +52,7 @@ export default function PortfolioTable() {
       },
     },
     {
-      accessorKey: "wine_name",
+      accessorKey: "name",
       header: () => (
         <div className="text-left text-gray-400 font-light text-[12px]">
           Name
@@ -60,18 +60,21 @@ export default function PortfolioTable() {
       ),
       cell: ({ getValue, row }) => {
         const basket_list = row.original.basket_details;
-        const lwin = row.original.id;
+        const name = row.original.wine_parent
+          ? row.original.wine_parent?.name
+          : row.original.basket_details?.name;
+        const index_num = row.index;
 
         return (
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
           >
-            <div className="flex justify-left text-[12px]">
-              {getValue() as string}
+            <div className="flex justify-left text-left text-[12px]">
+              {name}
             </div>
           </Link>
         );
@@ -86,6 +89,7 @@ export default function PortfolioTable() {
       ),
       cell: ({ getValue, row }) => {
         const basket_list = row.original.basket_details;
+        const index_num = row.index;
 
         const owner =
           row.original.sub_account === null
@@ -95,8 +99,8 @@ export default function PortfolioTable() {
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
           >
             <div className="flex justify-left text-[12px]">{owner}</div>
@@ -114,12 +118,14 @@ export default function PortfolioTable() {
       cell: ({ getValue, row }) => {
         const basket_list = row.original.basket_details;
         const vintage = row.original.wine_vintage;
+        const index_num = row.index;
+
         return (
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
           >
             <div className="flex justify-center text-[12px]">
@@ -138,12 +144,14 @@ export default function PortfolioTable() {
       ),
       cell: ({ getValue, row }) => {
         const basket_list = row.original.basket_details;
+        const index_num = row.index;
+
         return (
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
           >
             <div className="flex justify-center text-[12px]">
@@ -162,13 +170,14 @@ export default function PortfolioTable() {
       ),
       cell: ({ getValue, row }) => {
         const basket_list = row.original.basket_details;
+        const index_num = row.index;
 
         return (
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
             className="w-full"
           >
@@ -198,13 +207,14 @@ export default function PortfolioTable() {
 
         // Format the number with commas
         const formattedInvestment = wholeInvestment.toLocaleString();
+        const index_num = row.index;
 
         return (
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
           >
             <div className="flex justify-center text-[12px]">
@@ -229,13 +239,14 @@ export default function PortfolioTable() {
         // Round the number to a whole number and format with commas
         const formattedValue = Math.floor(market_value) // or Math.round(market_value) if you want to round
           .toLocaleString(); // Add commas for thousands
+        const index_num = row.index;
 
         return (
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
           >
             <div className="text-[12px] flex justify-center">
@@ -265,13 +276,14 @@ export default function PortfolioTable() {
         // const gainLoss = Number(row.original.profit_lost_by_percent.toFixed(0))
         const textColor = gainLoss < 0 ? "text-red-500" : "text-green-500";
         const basket_list = row.original.basket_details;
+        const index_num = row.index;
 
         return (
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
           >
             <div
@@ -308,13 +320,14 @@ export default function PortfolioTable() {
         // Format the number with commas
         const formattedGainLoss =
           gainLossPer === -0 ? 0 : gainLossPer.toLocaleString();
+        const index_num = row.index;
 
         return (
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
           >
             <div
@@ -337,6 +350,7 @@ export default function PortfolioTable() {
         const status_original = getValue() as string;
         const quantity = row.original.quantity;
         const basket_list = row.original.basket_details;
+        const index_num = row.index;
 
         const status =
           quantity === 0
@@ -355,8 +369,8 @@ export default function PortfolioTable() {
           <Link
             href={
               basket_list === null
-                ? `/dashboard/portfolio/${row.original.id}`
-                : `/dashboard/portfolio/bundle/${row.original.id}`
+                ? `/dashboard/portfolio/${index_num}`
+                : `/dashboard/portfolio/bundle/${index_num}`
             }
             className="w-full"
           >

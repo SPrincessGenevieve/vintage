@@ -73,7 +73,7 @@ export default function DepositForm() {
       >
         {loading && (
           <div>
-            <SpinnerIcon strokeColor="white"></SpinnerIcon>
+            <SpinnerIcon stroke_color="white"></SpinnerIcon>
           </div>
         )}
         Make a deposit

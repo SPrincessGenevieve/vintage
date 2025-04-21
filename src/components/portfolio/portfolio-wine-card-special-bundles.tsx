@@ -3,30 +3,14 @@
 import {
   Plus,
   Minus,
-  Grape,
-  MapPinned,
-  Wine,
-  StopCircle,
-  AlertCircleIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-} from "../ui/dialog";
 import { Button } from "../ui/button";
-import {
-  BundleDetailsType,
-  InvestmentListType,
-  SpecialBundleDetails,
-  SpecialBundlesList,
-} from "@/app/context/UserContext";
 import Image from "next/image";
 import { useUserContext } from "@/app/context/UserContext";
 import BuyBundleDialog from "./buy-now-dialog-bundle";
 import SellBundleDialog from "./sell-to-cart-dialog-bundle";
+import { InvestmentType } from "@/lib/types";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -39,7 +23,7 @@ interface Visibility {
 export default function PortfolioWineCardSpecialBundles({
   item,
 }: {
-  item: BundleDetailsType;
+  item: InvestmentType;
 }) {
   const { setUserDetails, sessionkey } = useUserContext();
   const [number_of_cases, setCases] = useState<number>(1);
@@ -57,7 +41,7 @@ export default function PortfolioWineCardSpecialBundles({
   const displayValue = (value: string | undefined) => {
     return value === "NA" ? "" : value || "";
   };
-  const vintage_year = item.basket_items[0]?.wine_vintage.vintage;
+  const vintage_year = item.basket_items && item.basket_items[0].wine_vintage.vintage;
 
   const handleCancel = () => {
     setIsDisabled(false);
@@ -76,7 +60,7 @@ export default function PortfolioWineCardSpecialBundles({
     setColor("text-gray-500");
   };
 
-  console.log("IMAGE: ", item.basket_details.image);
+  console.log("IMAGE: ", item.basket_details?.image);
 
   return (
     <div className="h-auto min-h-full  bg-white w-full p-3 border rounded-2xl flex">
@@ -87,7 +71,7 @@ export default function PortfolioWineCardSpecialBundles({
               <Image
                 width={400}
                 height={400}
-                src={item.basket_details.image}
+                src={item.basket_details?.image || "/fallback.png"}
                 alt="card"
                 className="w-auto h-full max-h-[250px]"
               />
@@ -98,12 +82,12 @@ export default function PortfolioWineCardSpecialBundles({
       <div className="flex w-full relative h-auto items-center flex-col px-5">
         <div className="mt-6 port-desc w-full">
           <h1 className="text-[16px] font-semibold">
-            {displayValue(item.basket_details.name) || "None"}
+            {displayValue(item.basket_details?.name) || "None"}
           </h1>
 
           <div>
             <p className="text-justify text-muted-foreground text-[14px]">
-              {item.basket_details.winery} <br />
+              {item.basket_details && item.basket_details.winery} <br />
             </p>
           </div>
 
@@ -223,7 +207,7 @@ export default function PortfolioWineCardSpecialBundles({
                 <SellBundleDialog
                   quantity={item.quantity}
                   market_value={Number(item.investment).toLocaleString()}
-                  price={item.market_value || 0}
+                  price={Number(item.market_value) || 0}
                   item={item}
                 />
               </div>

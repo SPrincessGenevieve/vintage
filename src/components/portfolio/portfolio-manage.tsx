@@ -173,7 +173,7 @@ export default function PortfolioManage({
               src={
                 item.wine_parent
                   ? item.wine_parent.images[0]
-                  : item.basket_details?.image || "fallback.png"
+                  : item.basket_details?.image || "/fallback.png"
               }
               alt={""}
             ></Image>

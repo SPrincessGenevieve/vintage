@@ -143,6 +143,7 @@ export type InvestmentType = {
     image: string | StaticImageData | undefined;
     region: string;
     fromm: string;
+    winery: string;
     grape_variety: string;
     grapes: string;
     special_id: null | string;

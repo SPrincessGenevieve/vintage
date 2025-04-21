@@ -98,7 +98,7 @@ export default function ResetMFAPage() {
           <Button className="">
             {loading && (
               <div className="absolute w-full h-full top-0 left-0">
-                <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                <SpinnerIcon stroke_color="white"></SpinnerIcon>
               </div>
             )}
             SUBMIT

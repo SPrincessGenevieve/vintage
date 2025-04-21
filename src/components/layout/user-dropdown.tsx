@@ -89,7 +89,7 @@ export default function UserDropdown() {
             <Button onClick={handleLogout} className="w-full rounded-3xl">
               {loading && (
                 <div>
-                  <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                  <SpinnerIcon stroke_color="white"></SpinnerIcon>
                 </div>
               )}Yes
             </Button>

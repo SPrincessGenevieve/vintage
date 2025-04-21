@@ -57,7 +57,7 @@ export default function Sidenav() {
               >
                 <div className="w-[30px] justify-center flex cursor-pointer">
                   {React.cloneElement(item.icon, {
-                    strokeColor:
+                    stroke_color:
                       (pathname === "/dashboard" &&
                         item.href === "/dashboard") ||
                       (pathname.startsWith("/dashboard") &&

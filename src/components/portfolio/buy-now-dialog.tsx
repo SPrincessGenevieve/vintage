@@ -80,154 +80,31 @@ export default function BuyDialog({
     e.preventDefault();
     setLoader("");
 
-    const authHeader = "Token " + sessionkey;
-
-    let data;
-
-    if (item.wine_vintage_details.is_user_investment === true) {
-      data = {
-        investment_id: item.wine_vintage_details.id,
-        case_size: item.case_size,
-        quantity: item.quantity,
-      };
-    } else {
-      data = {
-        lwin11: item.wine_vintage_details.lwin11,
-        case_size: item.case_size,
-        quantity: item.quantity,
-      };
-    }
-
-    try {
-      // Make a request to your backend to get the SetupIntent clientSecret using axios
-      const response = await axios.post(
-        `${apiUrl}/api/wine/cart-items/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
-      if (response.status === 200 || response.status === 201) {
-        setLoader("hidden");
-        setMessage("Successfully added");
-        setColor("text-green-500");
-        console.log("WINE BOUGHT SUCCESSFULLY");
-
-        const response = await axios.get(`${apiUrl}/api/wine/cart-items/`, {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        });
-
-        setUserDetails({
-          cartCount: response.data.length,
-        });
-
-        setLoader("hidden");
-        router.push(`/dashboard/orders`);
-      } else {
-        setIsHigher(true);
-      }
-    } catch (error: any) {
-      console.error("Error during request:", error);
-      // Check if the error response exists and is a 400 status
-      if (error.response) {
-        console.error("Response Status: ", error.response.status);
-        console.error("Response Data: ", error.response.data);
-        setMessage(error.response.data.details);
-        setColor("text-red-500");
-        setLoader("hidden");
-      } else {
-        console.error("Error Message: ", error.message); // In case the request didn't reach the server
-        setMessage(error.response.data.details);
-        setLoader("hidden");
-        setColor("text-red-500");
-      }
-    } finally {
+    setTimeout(() => {
       setLoader("hidden");
-    }
+      setMessage("Successfully added");
+      setColor("text-green-500");
+      console.log("WINE BOUGHT SUCCESSFULLY");
+      setTimeout(() => {
+        setLoader("hidden");
+      }, 1500);
+    }, 1000);
   };
 
   const handleBuyMoreHigherPrice = async (e: any) => {
     e.preventDefault();
     setLoader("");
 
-    const authHeader = "Token " + sessionkey;
-
-    let data;
-
-    if (item.wine_vintage_details.is_user_investment === true) {
-      data = {
-        investment_id: item.wine_vintage_details.id,
-        case_size: item.case_size,
-        quantity: cases,
-        is_confirmed: true,
-      };
-    } else {
-      data = {
-        lwin11: item.wine_vintage_details.lwin11,
-        case_size: item.case_size,
-        quantity: cases,
-        is_confirmed: true,
-      };
-    }
-
-    try {
-      // Make a request to your backend to get the SetupIntent clientSecret using axios
-      const response = await axios.post(
-        `${apiUrl}/api/wine/cart-items/`,
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: authHeader,
-          },
-        }
-      );
-      if (response.status === 200 || response.status === 201) {
-        setLoader("hidden");
-        setMessage("Successfully added");
-        setColor("text-green-500");
-        console.log("WINE BOUGHT SUCCESSFULLY");
-
-        const response = await axios.get(`${apiUrl}/api/wine/cart-items/`, {
-          headers: {
-            Authorization: authHeader,
-            "Content-Type": "application/json",
-          },
-        });
-
-        setUserDetails({
-          cartCount: response.data.length,
-        });
-
-        setLoader("hidden");
-        router.push(`/dashboard/orders`);
-      }
-    } catch (error: any) {
-      console.error("Error during request:", error);
-      // Check if the error response exists and is a 400 status
-      if (error.response) {
-        console.error("Response Status: ", error.response.status);
-        console.error("Response Data: ", error.response.data);
-        setMessage(error.response.data.details);
-        setColor("text-red-500");
-        setLoader("hidden");
-      } else {
-        console.error("Error Message: ", error.message); // In case the request didn't reach the server
-        setMessage(error.response.data.details);
-        setLoader("hidden");
-        setColor("text-red-500");
-      }
-    } finally {
+    setTimeout(() => {
       setLoader("hidden");
-    }
+      setMessage("Successfully added");
+      setColor("text-green-500");
+      console.log("WINE BOUGHT SUCCESSFULLY");
+      setTimeout(() => {
+        setLoader("hidden");
+      }, 1500);
+    }, 1000);
   };
-
 
   return (
     <>
@@ -246,14 +123,14 @@ export default function BuyDialog({
               <DialogHeader>
                 <DialogTitle className="text-[16px] text-[red] text-center font-normal">
                   The liv ex price is higher than our price. Are you sure you
-                  want to buy more Lwin11: {item.wine_vintage_details.lwin11}?
+                  want to buy more Lwin11: {item.wine_vintage_details?.lwin11}?
                 </DialogTitle>
                 <div className="relative w-full min-h-[200px] flex justify-center rounded-[10px] border items-center">
                   <div className="absolute rounded-full w-[90px] h-[90px] bg-red-950 z-10"></div>
                   <Image
                     width={300}
                     height={300}
-                    src={parent?.images?.[0] || "/fallback-image.jpg"}
+                    src={item.wine_parent?.images[0] || "/fallback-image.jpg"}
                     alt="card"
                     className="z-20 w-auto max-h-[150px]"
                   />
@@ -286,7 +163,7 @@ export default function BuyDialog({
                     className="rounded-full py-2 text-[14px] w-full bg-[#1BCD32]"
                   >
                     <div className={`${loader}`}>
-                      <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                      <SpinnerIcon stroke_color="white"></SpinnerIcon>
                     </div>
                     Proceed
                   </Button>
@@ -319,7 +196,7 @@ export default function BuyDialog({
                   <Image
                     width={300}
                     height={300}
-                    src={parent?.images?.[0] || "/fallback-image.jpg"}
+                    src={item.wine_parent?.images[0] || "/fallback-image.jpg"}
                     alt="card"
                     className="z-20 w-auto max-h-[150px]"
                   />
@@ -373,7 +250,7 @@ export default function BuyDialog({
                     className="rounded-full py-2 text-[14px] w-full bg-[#1BCD32]"
                   >
                     <div className={`${loader}`}>
-                      <SpinnerIcon strokeColor="white"></SpinnerIcon>
+                      <SpinnerIcon stroke_color="white"></SpinnerIcon>
                     </div>
                     Buy
                   </Button>

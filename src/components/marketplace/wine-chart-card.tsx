@@ -19,35 +19,7 @@ export default function WineChart({ item, parent, region }: ChartType) {
     useUserContext();
   const lwin_11 = item.lwin11;
 
-  useEffect(() => {
-    async function fetchData() {
-      if (!sessionkey) return;
-
-      const authHeader = "Token " + sessionkey;
-
-      try {
-        // Fetch the first page to get the total number of pages and wine details
-        const response = await axios.get(
-          `${LinkApi.href}/data-points/${lwin_11}/`,
-          {
-            headers: {
-              Authorization: authHeader,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        setUserDetails({
-          data_points: response.data,
-        });
-      } catch (error) {
-        console.error("Error fetching wine data:", error);
-      } finally {
-      }
-    }
-
-    fetchData();
-  }, [sessionkey, lwin_11]);
+ 
 
   // Function to handle the "NA" value check
   const displayValue = (value: string | undefined) => {
@@ -63,7 +35,6 @@ export default function WineChart({ item, parent, region }: ChartType) {
           name={parent ? parent.name : ""}
           vintage={item.vintage}
           case_size={selected_case_size}
-          item={data_points}
         />
       </div>
       <div className="p-4 grid grid-cols-2 gap-2 w-[20%] min-w-[250px] chart-cont-right">
